@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORBIT — Stop Refund Risks Before They Happen</title>
+  <meta name="description" content="ORBIT is a smart Chrome extension that detects angry customers, analyzes refund risks, and generates persuasive, human-like replies in seconds." />
+  <meta property="og:title" content="ORBIT — AI Co-Founder for Customer Success" />
+  <meta property="og:description" content="Stop Refund Risks Before They Happen. Auto-scan comments, detect risk, and reply in 1 click." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: {
+              orange: '#f97316',
+              'orange-light': '#fb923c',
+              purple: '#a855f7',
+              'purple-dark': '#7c3aed',
+            }
+          },
+          animation: {
+            'aurora-1': 'aurora1 18s ease-in-out infinite',
+            'aurora-2': 'aurora2 22s ease-in-out infinite',
+            'aurora-3': 'aurora3 15s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s ease-in-out infinite',
+          },
+          keyframes: {
+            aurora1: {
+              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.6' },
+              '33%': { transform: 'translate(10%, -15%) scale(1.15)', opacity: '0.8' },
+              '66%': { transform: 'translate(-8%, 10%) scale(0.9)', opacity: '0.5' },
+            },
+            aurora2: {
+              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.5' },
+              '50%': { transform: 'translate(-12%, 8%) scale(1.2)', opacity: '0.7' },
+            },
+            aurora3: {
+              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.4' },
+              '40%': { transform: 'translate(15%, 5%) scale(1.1)', opacity: '0.65' },
+              '80%': { transform: 'translate(-5%, -10%) scale(0.95)', opacity: '0.35' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* Aurora blobs */
+    .aurora-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    /* Glassmorphism card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* Orange gradient button */
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+      box-shadow: 0 0 40px rgba(249, 115, 22, 0.4), 0 4px 24px rgba(249, 115, 22, 0.3);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 60px rgba(249, 115, 22, 0.6), 0 8px 32px rgba(249, 115, 22, 0.5);
+    }
+    .btn-primary:active { transform: translateY(0px); }
+
+    /* Step number badge */
+    .step-badge {
+      background: linear-gradient(135deg, #f97316, #a855f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Risk badge colors */
+    .risk-high { color: #f87171; }
+    .risk-med  { color: #fb923c; }
+    .risk-low  { color: #4ade80; }
+
+    /* Subtle grid overlay */
+    .grid-overlay {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Shimmer on CTA */
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+    }
+  </style>
+</head>
+<body class="dark bg-slate-900 text-slate-50 overflow-x-hidden">
+
+  <!-- ───────────────── BACKGROUND AURORA ───────────────── -->
+  <div class="fixed inset-0 overflow-hidden z-0" aria-hidden="true">
+    <!-- Blob 1 — orange -->
+    <div class="aurora-blob animate-aurora-1"
+         style="width: 600px; height: 600px; top: -15%; left: -10%; background: radial-gradient(circle, rgba(249,115,22,0.35) 0%, transparent 70%);"></div>
+    <!-- Blob 2 — purple -->
+    <div class="aurora-blob animate-aurora-2"
+         style="width: 700px; height: 700px; top: 20%; right: -15%; background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);"></div>
+    <!-- Blob 3 — deep orange -->
+    <div class="aurora-blob animate-aurora-3"
+         style="width: 500px; height: 500px; bottom: 5%; left: 30%; background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);"></div>
+    <!-- Grid overlay -->
+    <div class="absolute inset-0 grid-overlay"></div>
+  </div>
+
+  <!-- ───────────────── NAVBAR ───────────────── -->
+  <nav class="relative z-10 flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+           style="background: linear-gradient(135deg, #f97316, #a855f7);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-white">
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
+                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.75"/>
+        </svg>
+      </div>
+      <span class="font-bold text-lg tracking-tight">ORBIT</span>
+    </div>
+    <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+      <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
+      <a href="#how-it-works" class="hover:text-white transition-colors duration-200">How It Works</a>
+      <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
+      <a href="privacy.html" class="hover:text-white transition-colors duration-200">Privacy</a>
+    </div>
+    <a href="#cta-section"
+       class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white btn-primary">
+      Install ORBIT (Free Trial)
+    </a>
+  </nav>
+
+  <!-- ───────────────── HERO ───────────────── -->
+  <section class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-28 text-center">
+
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-slate-300 mb-8 animate-pulse-slow">
+      <span>✨</span>
+      <span>Your AI Co-Founder for Customer Success</span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-tight mb-6">
+      Stop Refund Risks<br/>
+      <span class="gradient-text">Before They Happen.</span>
+    </h1>
+
+    <!-- Sub-headline -->
+    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+      ORBIT is a smart Chrome extension that detects angry customers, analyzes refund risks,
+      and generates persuasive, human-like replies in seconds.
+    </p>
+
+    <!-- CTA -->
+    <div id="cta-section" class="flex flex-col items-center gap-4">
+      <a href="https://chrome.google.com/webstore"
+         id="hero-cta-btn"
+         class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg btn-primary">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+        </svg>
+        Install ORBIT (Free Trial)
+      </a>
+      <p class="text-sm text-slate-500 flex items-center gap-1.5">
+        <span>🔒</span>
+        <span>100% Local Processing. Includes 10 Free AI Replies.</span>
+      </p>
+    </div>
+
+    <!-- Hero mock UI widget -->
+    <div class="mt-20 animate-float">
+      <div class="glass-card rounded-2xl p-6 max-w-md mx-auto text-left shadow-2xl"
+           style="box-shadow: 0 20px 80px rgba(249,115,22,0.15), 0 0 0 1px rgba(249,115,22,0.1);">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+               style="background: linear-gradient(135deg, #f97316, #a855f7);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+              <circle cx="12" cy="12" r="3" fill="currentColor"/>
+              <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
+                    stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <span class="font-semibold text-sm">ORBIT — Risk Analysis</span>
+          <span class="ml-auto text-xs text-slate-500">just now</span>
+        </div>
+        <!-- Comment preview -->
+        <div class="bg-slate-800/60 rounded-xl p-4 mb-4 border border-slate-700/50 text-sm text-slate-300 italic">
+          "This is unusable — refund NOW or I'm filing a dispute with PayPal."
+        </div>
+        <!-- Risk score bar -->
+        <div class="mb-4">
+          <div class="flex justify-between text-xs mb-1.5">
+            <span class="text-slate-400 font-medium">Refund Risk Score</span>
+            <span class="font-bold risk-high">92 / 100 — HIGH</span>
+          </div>
+          <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div class="h-full rounded-full" style="width: 92%; background: linear-gradient(90deg, #f87171, #dc2626);"></div>
+          </div>
+        </div>
+        <!-- AI Reply preview -->
+        <div class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">AI Reply Draft</div>
+        <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/40 text-sm text-slate-200 leading-relaxed">
+          Hey! Just saw your message — completely understand the frustration.
+          Let me get this sorted for you personally. DM me your order ID and I'll
+          handle it within the hour. 💪
+        </div>
+        <button id="widget-copy-btn"
+                class="mt-4 w-full py-2.5 rounded-xl text-sm font-semibold text-white btn-primary">
+          ✦ Copy & Reply
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── LOGOS / SOCIAL PROOF ───────────────── -->
+  <section class="relative z-10 pb-20 px-6">
+    <p class="text-center text-xs text-slate-600 uppercase tracking-widest font-medium mb-8">Works on your favourite platforms</p>
+    <div class="flex flex-wrap justify-center items-center gap-10 opacity-40 grayscale">
+      <!-- AppSumo wordmark -->
+      <svg height="28" viewBox="0 0 150 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">AppSumo</text>
+      </svg>
+      <!-- Gumroad wordmark -->
+      <svg height="28" viewBox="0 0 130 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">Gumroad</text>
+      </svg>
+      <!-- ProductHunt wordmark -->
+      <svg height="28" viewBox="0 0 180 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">Product Hunt</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ───────────────── HOW IT WORKS (3 STEPS) ───────────────── -->
+  <section id="how-it-works" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">How It Works</p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
+        From Comment to Reply<br/>
+        <span class="gradient-text">in 3 Seconds Flat.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Step 1 -->
+      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-orange-500/30 transition-all duration-300 cursor-default group">
+        <div class="flex items-center gap-3">
+          <span class="text-4xl font-black step-badge">01</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-orange-400">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-2">Auto-Scan</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Sits quietly in your browser and automatically scans comment sections on platforms like AppSumo and Gumroad as you browse.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-purple-500/30 transition-all duration-300 cursor-default group"
+           style="border-color: rgba(168,85,247,0.15);">
+        <div class="flex items-center gap-3">
+          <span class="text-4xl font-black step-badge">02</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-purple-400">
+            <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-2">Risk Detection</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Analyzes sentiment and tone, then assigns a <strong class="text-white">Refund Risk Score</strong> from 0–100 so you know exactly which comments need urgent attention.
+          </p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-orange-500/30 transition-all duration-300 cursor-default group">
+        <div class="flex items-center gap-3">
+          <span class="text-4xl font-black step-badge">03</span>
+        </div>
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2);">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-orange-400">
+            <path d="M12 20h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-2">1-Click Reply</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Generates a personalized, founder-level response — empathetic, decisive, and human. Click to insert directly into the comment box.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───────────────── FEATURES DEEP DIVE ───────────────── -->
+  <section id="features" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">Features</p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
+        Built for Founders Who<br/>
+        <span class="gradient-text">Can't Afford Churn.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Feature card 1 -->
+      <div class="glass-card rounded-2xl p-7 flex gap-5">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-orange-400">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-base mb-1.5">Real-Time Comment Scanning</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Automatically monitors live pages as you scroll — no manual refresh needed.</p>
+        </div>
+      </div>
+      <!-- Feature card 2 -->
+      <div class="glass-card rounded-2xl p-7 flex gap-5">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-purple-400">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-base mb-1.5">Gemini AI Replies</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Powered by Google Gemini, replies sound human, not chatbot. Customisable tone: friendly, professional, or empathetic.</p>
+        </div>
+      </div>
+      <!-- Feature card 3 -->
+      <div class="glass-card rounded-2xl p-7 flex gap-5">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-orange-400">
+            <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-base mb-1.5">Privacy First</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">All analysis runs locally or via direct secure API calls. Your customer data never touches our servers.</p>
+        </div>
+      </div>
+      <!-- Feature card 4 -->
+      <div class="glass-card rounded-2xl p-7 flex gap-5">
+        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-purple-400">
+            <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-bold text-base mb-1.5">Smart Sidebar Dashboard</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">All flagged comments in one place. See risk scores at a glance and manage replies without leaving the page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── PRICING ───────────────── -->
+  <section id="pricing" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
+    <div class="text-center mb-16">
+      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">Pricing</p>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
+        Simple, Transparent<br/>
+        <span class="gradient-text">Pricing.</span>
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Sandbox (Free) -->
+      <div class="glass-card rounded-2xl p-6 flex flex-col">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Sandbox</h3>
+          <p class="text-sm text-slate-400 mt-1">Try before you buy</p>
+        </div>
+        <div class="mb-4">
+          <span class="text-3xl font-black text-white">$0</span>
+          <span class="text-sm text-slate-500"> once</span>
+        </div>
+        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>10 trial AI replies</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Test the magic</span>
+          </li>
+        </ul>
+        <a href="https://chrome.google.com/webstore" class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
+          Get Started
+        </a>
+      </div>
+
+      <!-- Pay-As-You-Go -->
+      <div class="glass-card rounded-2xl p-6 flex flex-col">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Pay-As-You-Go</h3>
+          <p class="text-sm text-slate-400 mt-1"> credits never expire</p>
+        </div>
+        <div class="mb-4">
+          <span class="text-3xl font-black text-white">$9</span>
+          <span class="text-sm text-slate-500"> top-up</span>
+        </div>
+        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>150 replies</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Credits never expire</span>
+          </li>
+        </ul>
+        <a href="https://chrome.google.com/webstore" class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
+          Choose Plan
+        </a>
+      </div>
+
+      <!-- Pro Monthly -->
+      <div class="glass-card rounded-2xl p-6 flex flex-col">
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Pro Monthly</h3>
+          <p class="text-sm text-slate-400 mt-1">For consistent creators</p>
+        </div>
+        <div class="mb-4">
+          <span class="text-3xl font-black text-white">$12</span>
+          <span class="text-sm text-slate-500">/month</span>
+        </div>
+        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>200 replies/month</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Custom tone</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Priority support</span>
+          </li>
+        </ul>
+        <a href="https://chrome.google.com/webstore" class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
+          Choose Plan
+        </a>
+      </div>
+
+      <!-- Pro Annual (Best Value) -->
+      <div class="glass-card rounded-2xl p-6 flex flex-col relative" style="border-color: rgba(249,115,22,0.5);">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500 to-purple-500 text-white">
+          Best Value
+        </div>
+        <div class="mb-4">
+          <h3 class="text-lg font-bold text-white">Pro Annual</h3>
+          <p class="text-sm text-slate-400 mt-1">Save 31% vs monthly</p>
+        </div>
+        <div class="mb-4">
+          <span class="text-3xl font-black text-white">$99</span>
+          <span class="text-sm text-slate-500">/year</span>
+        </div>
+        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>200 replies/month</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Custom tone</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Priority support</span>
+          </li>
+        </ul>
+        <a href="https://chrome.google.com/webstore" class="w-full py-3 rounded-xl text-sm font-bold text-white btn-primary text-center">
+          Choose Plan
+        </a>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-slate-500 mt-8">No hidden fees. Switch or cancel plans anytime.</p>
+  </section>
+
+  <!-- ───────────────── FINAL CTA BANNER ───────────────── -->
+  <section class="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
+    <div class="glass-card rounded-3xl p-12 md:p-16"
+         style="box-shadow: 0 0 100px rgba(249,115,22,0.1), 0 0 0 1px rgba(249,115,22,0.08);">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+           style="background: linear-gradient(135deg, #f97316, #a855f7);">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-white">
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
+                stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-5">
+        Your Next Refund Request<br/>
+        <span class="shimmer-text">Could Be Prevented.</span>
+      </h2>
+      <p class="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
+        Join hundreds of SaaS founders and digital creators protecting their revenue, one reply at a time.
+      </p>
+      <a href="https://chrome.google.com/webstore"
+         id="bottom-cta-btn"
+         class="inline-flex items-center gap-3 px-9 py-4 rounded-2xl text-white font-bold text-lg btn-primary">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
+        </svg>
+        Install ORBIT (Free Trial)
+      </a>
+      <p class="text-sm text-slate-600 mt-4">Includes 10 Free AI Replies • No credit card required</p>
+    </div>
+  </section>
+
+  <!-- ───────────────── FOOTER ───────────────── -->
+  <footer class="relative z-10 border-t border-slate-800 px-6 py-10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg flex items-center justify-center"
+             style="background: linear-gradient(135deg, #f97316, #a855f7);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="text-white">
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <span class="font-bold text-sm">ORBIT</span>
+        <span class="text-slate-600 text-xs ml-2">© 2025 All rights reserved.</span>
+      </div>
+      <nav class="flex items-center gap-8 text-sm text-slate-400">
+        <a href="privacy.html" id="footer-privacy-link" class="hover:text-white transition-colors duration-200">Privacy Policy</a>
+        <a href="mailto:support@orbitextension.com" id="footer-contact-link" class="hover:text-white transition-colors duration-200">Contact</a>
+        <a href="https://chrome.google.com/webstore" id="footer-install-link" class="hover:text-white transition-colors duration-200">Install Extension</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    // --- Widget CTA copy feedback ---
+    document.getElementById('widget-copy-btn').addEventListener('click', function () {
+      const btn = this;
+      btn.textContent = '✓ Copied to clipboard!';
+      btn.style.opacity = '0.8';
+      setTimeout(() => {
+        btn.textContent = '✦ Copy & Reply';
+        btn.style.opacity = '1';
+      }, 1800);
+    });
+  </script>
+</body>
+</html>

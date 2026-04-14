@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — ORBIT Chrome Extension</title>
+  <meta name="description" content="ORBIT Privacy Policy. We are committed to protecting your privacy. Learn how ORBIT handles your data." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          animation: {
+            'aurora-slow': 'aurora1 24s ease-in-out infinite',
+          },
+          keyframes: {
+            aurora1: {
+              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.4' },
+              '50%': { transform: 'translate(5%, -8%) scale(1.1)', opacity: '0.55' },
+            },
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .aurora-blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); pointer-events: none;
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .policy-section h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 0.75rem;
+      padding-top: 2rem;
+    }
+    .policy-section p, .policy-section li {
+      color: #94a3b8;
+      line-height: 1.8;
+      font-size: 0.9375rem;
+    }
+    .policy-section ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .policy-section ul li {
+      padding-left: 1.25rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+    .policy-section ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: #f97316;
+      font-weight: 600;
+    }
+    .policy-section strong { color: #f8fafc; font-weight: 600; }
+    .highlight-box {
+      background: rgba(249,115,22,0.07);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .highlight-box p { color: #fdba74; }
+    hr { border-color: rgba(255,255,255,0.06); margin: 0.5rem 0; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
+      box-shadow: 0 0 30px rgba(249,115,22,0.35);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(249,115,22,0.5); }
+  </style>
+</head>
+<body class="dark bg-slate-900 text-slate-50 overflow-x-hidden">
+
+  <!-- Aurora Background -->
+  <div class="fixed inset-0 overflow-hidden z-0" aria-hidden="true">
+    <div class="aurora-blob animate-aurora-slow"
+         style="width: 700px; height: 700px; top: -20%; right: -20%; background: radial-gradient(circle, rgba(168,85,247,0.2) 0%, transparent 70%);"></div>
+    <div class="aurora-blob"
+         style="width: 500px; height: 500px; bottom: -10%; left: -15%; animation: aurora1 28s ease-in-out infinite; background: radial-gradient(circle, rgba(249,115,22,0.18) 0%, transparent 70%);"></div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="relative z-10 flex items-center justify-between px-6 py-5 max-w-4xl mx-auto">
+    <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+      <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+           style="background: linear-gradient(135deg, #f97316, #a855f7);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+          <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
+                stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
+                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <span class="font-bold text-base tracking-tight">ORBIT</span>
+    </a>
+    <a href="index.html" class="text-sm text-slate-400 hover:text-white transition-colors">← Back to Home</a>
+  </nav>
+
+  <!-- Header -->
+  <header class="relative z-10 max-w-4xl mx-auto px-6 pt-12 pb-10 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs font-medium text-slate-400 mb-6">
+      🔒 Privacy Policy
+    </div>
+    <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
+      We Take Your<br/>
+      <span class="gradient-text">Privacy Seriously.</span>
+    </h1>
+    <p class="text-slate-400 max-w-xl mx-auto text-base leading-relaxed">
+      ORBIT is built with a privacy-first philosophy. This document explains exactly what data we collect, how we use it, and — more importantly — what we <em>never</em> do with it.
+    </p>
+    <p class="text-xs text-slate-600 mt-4">Last updated: April 14, 2025 &nbsp;·&nbsp; Effective: April 14, 2025</p>
+  </header>
+
+  <!-- Policy Content -->
+  <main class="relative z-10 max-w-4xl mx-auto px-6 pb-24">
+    <div class="glass-card rounded-3xl p-8 md:p-12 policy-section">
+
+      <!-- 1. Introduction -->
+      <h2>1. Introduction</h2>
+      <p>
+        This Privacy Policy applies to the <strong>ORBIT Chrome Extension</strong> ("ORBIT", "we", "our", or "us"),
+        available on the Chrome Web Store. ORBIT is designed to help SaaS founders and digital creators manage
+        customer comments, detect refund risk, and generate AI-powered replies on supported product platforms.
+      </p>
+      <p class="mt-3">
+        By installing or using ORBIT, you agree to the terms described in this policy.
+        If you do not agree, please uninstall the extension.
+      </p>
+
+      <hr class="mt-8"/>
+
+      <!-- 2. Data We Collect -->
+      <h2>2. Information We Access</h2>
+      <p>ORBIT accesses the following information solely to provide its core functionality:</p>
+      <ul class="mt-3">
+        <li><strong>Page content on supported platforms</strong> (e.g., AppSumo, Gumroad) — specifically comment text visible on product pages you actively visit.</li>
+        <li><strong>Your product configuration</strong> — product name, product description, and support email address that <em>you</em> enter into ORBIT's settings panel. This data is stored only in your browser's local storage (<code>chrome.storage.local</code>).</li>
+        <li><strong>Authentication state</strong> — if you sign in to ORBIT, your Firebase authentication token and user ID are stored locally to maintain your session and credit balance. We never store your password.</li>
+        <li><strong>License key</strong> — if you activate a paid plan, your LemonSqueezy license key is stored locally and verified against LemonSqueezy's servers to confirm validity.</li>
+      </ul>
+
+      <hr class="mt-8"/>
+
+      <!-- 3. Local Processing — Critical clause -->
+      <h2>3. Local Processing &amp; Data Security</h2>
+      <div class="highlight-box">
+        <p>
+          <strong style="color:#fb923c;">⚡ Core Privacy Commitment:</strong> All comment analysis, sentiment scoring,
+          and Refund Risk Score calculations are performed <strong style="color:#fb923c;">locally within your browser</strong> or
+          via direct, encrypted API calls made from your device. ORBIT does not operate its own AI infrastructure
+          that stores or logs your customers' comment data.
+        </p>
+      </div>
+      <p>Specifically:</p>
+      <ul class="mt-3">
+        <li>AI reply generation is performed via a <strong>secure, direct API call</strong> to Google Gemini from your browser, or through ORBIT's Cloudflare Worker proxy. The proxy forwards your request and immediately returns the response — it does not persist comment content or generated replies.</li>
+        <li>ORBIT does <strong>not</strong> build a database of your customers' comments on our servers.</li>
+        <li>ORBIT does <strong>not</strong> log IP addresses associated with processed comments.</li>
+        <li>All settings and preferences are saved exclusively in <strong>your browser's local storage</strong> and never transmitted to ORBIT's servers.</li>
+      </ul>
+
+      <hr class="mt-8"/>
+
+      <!-- 4. No Data Selling -->
+      <h2>4. Sharing &amp; Sale of Data</h2>
+      <div class="highlight-box">
+        <p>
+          <strong style="color:#fb923c;">We do not sell, rent, or trade your personal data to third parties.</strong>
+          Period. We will never monetize your data or your customers' data in any way.
+        </p>
+      </div>
+      <p>We may share limited, non-personal information only in the following circumstances:</p>
+      <ul class="mt-3">
+        <li><strong>Service providers:</strong> We use Google Firebase for authentication and Google Gemini for AI generation. These providers have their own privacy policies and are bound by data processing agreements.</li>
+        <li><strong>License verification:</strong> Your license key is shared with LemonSqueezy solely to verify activation status and plan tier.</li>
+        <li><strong>Legal compliance:</strong> We may disclose information if required by law or to protect the rights and safety of users, provided we are legally compelled to do so.</li>
+      </ul>
+
+      <hr class="mt-8"/>
+
+      <!-- 5. Limited Use -->
+      <h2>5. Limited Use Policy</h2>
+      <p>
+        ORBIT's access to page content is strictly limited and purposeful:
+      </p>
+      <ul class="mt-3">
+        <li>ORBIT <strong>only reads data on supported product pages</strong> (currently AppSumo and Gumroad) where you have explicitly navigated to. It does not read data on any other websites.</li>
+        <li>ORBIT reads comment text <strong>only to provide the AI reply and risk-scoring features</strong> you have requested. The data is not used for profiling, advertising, or any secondary purpose.</li>
+        <li>ORBIT does not track your browsing history, collect URLs outside supported platforms, or spy on your activity in any way.</li>
+        <li>ORBIT never reads or accesses any form fields, passwords, payment details, or personally identifiable information beyond what is described in Section 2.</li>
+      </ul>
+      <p class="mt-3">
+        This extension complies with the
+        <strong>Chrome Web Store's Limited Use Policy</strong> and Google's requirements for extensions
+        that request <code>activeTab</code>, <code>storage</code>, and host permissions.
+      </p>
+
+      <hr class="mt-8"/>
+
+      <!-- 6. Third Party Services -->
+      <h2>6. Third-Party Services</h2>
+      <p>ORBIT integrates with the following third-party services. Each operates under its own privacy policy:</p>
+      <ul class="mt-3">
+        <li><strong>Google Firebase</strong> — Authentication and user account management. <a href="https://firebase.google.com/support/privacy" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Firebase Privacy Policy</a></li>
+        <li><strong>Google Gemini API</strong> — AI text generation. Comment text is sent to Gemini to generate a reply draft. <a href="https://ai.google.dev/terms" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Gemini API Terms</a></li>
+        <li><strong>LemonSqueezy</strong> — License key validation. <a href="https://www.lemonsqueezy.com/privacy" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">LemonSqueezy Privacy Policy</a></li>
+        <li><strong>Cloudflare Workers</strong> — Serverless proxy for managed AI requests. Requests are not logged or stored. <a href="https://www.cloudflare.com/privacypolicy/" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Cloudflare Privacy Policy</a></li>
+      </ul>
+
+      <hr class="mt-8"/>
+
+      <!-- 7. Data Retention -->
+      <h2>7. Data Retention &amp; Deletion</h2>
+      <p>
+        Since ORBIT stores settings and authentication data locally in your browser, you have full control over
+        your data at all times:
+      </p>
+      <ul class="mt-3">
+        <li>You can clear all ORBIT data by uninstalling the extension. Chrome will remove all associated local storage.</li>
+        <li>You can sign out of ORBIT at any time from the extension popup. This clears your authentication token from local storage.</li>
+        <li>You can deactivate your license key from within the extension settings.</li>
+        <li>If you created a Firebase account with ORBIT, you may request account deletion by contacting us at the email address below.</li>
+      </ul>
+
+      <hr class="mt-8"/>
+
+      <!-- 8. Children's Privacy -->
+      <h2>8. Children's Privacy</h2>
+      <p>
+        ORBIT is not directed toward children under the age of 13. We do not knowingly collect personal
+        information from children under 13. If you believe a child under 13 has provided us with personal
+        information, please contact us and we will promptly delete it.
+      </p>
+
+      <hr class="mt-8"/>
+
+      <!-- 9. Changes -->
+      <h2>9. Changes to This Policy</h2>
+      <p>
+        We may update this Privacy Policy periodically. Any changes will be reflected by updating the
+        "Last Updated" date at the top of this page. We encourage you to review this policy from time to time.
+        Continued use of ORBIT after changes constitutes your acceptance of the updated policy.
+      </p>
+
+      <hr class="mt-8"/>
+
+      <!-- 10. Contact -->
+      <h2>10. Contact Us</h2>
+      <p>
+        If you have any questions, concerns, or requests regarding this Privacy Policy or your data,
+        please reach out to us:
+      </p>
+      <div class="highlight-box mt-4">
+        <p><strong style="color: #f8fafc;">ORBIT Extension Support</strong></p>
+        <p>📧 Email: <a href="mailto:support@orbitextension.com" class="text-orange-400 hover:text-orange-300">support@orbitextension.com</a></p>
+        <p>🌐 Website: <a href="index.html" class="text-orange-400 hover:text-orange-300">orbitextension.com</a></p>
+      </div>
+
+    </div>
+
+    <!-- Back to home CTA -->
+    <div class="text-center mt-12">
+      <a href="index.html"
+         id="back-home-btn"
+         class="inline-flex items-center gap-2 px-7 py-3 rounded-xl text-white font-semibold text-sm btn-primary">
+        ← Back to ORBIT Home
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-slate-800 px-6 py-8">
+    <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-600">
+      <div class="flex items-center gap-2">
+        <div class="w-6 h-6 rounded-md flex items-center justify-center"
+             style="background: linear-gradient(135deg, #f97316, #a855f7);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" class="text-white">
+            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+            <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <span class="font-semibold text-slate-500">ORBIT © 2025</span>
+      </div>
+      <nav class="flex gap-6">
+        <a href="index.html" class="hover:text-slate-300 transition-colors">Home</a>
+        <a href="privacy.html" class="hover:text-slate-300 transition-colors text-slate-400">Privacy Policy</a>
+        <a href="mailto:support@orbitextension.com" class="hover:text-slate-300 transition-colors">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+</body>
+</html>
