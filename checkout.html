@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ORBIT Checkout</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <style>
+      :root { --bg:#070815; --card:#0b1026; --ink:#e5e7eb; --muted:#9ca3af; --border:rgba(255,255,255,0.10); --accent:#f97316; }
+      html,body{height:100%;}
+      body{margin:0;background:radial-gradient(900px 520px at 20% 10%, rgba(249,115,22,0.18), transparent 60%),radial-gradient(900px 520px at 90% 30%, rgba(168,85,247,0.14), transparent 60%),var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;}
+      .wrap{max-width:920px;margin:0 auto;padding:32px 18px;}
+      .card{background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));border:1px solid var(--border);border-radius:16px;padding:18px;}
+      h1{font-size:18px;margin:0 0 6px;letter-spacing:-0.2px;}
+      p{margin:0;color:var(--muted);font-size:13px;line-height:1.5;}
+      .status{margin-top:14px;padding:12px 12px;border-radius:12px;border:1px solid var(--border);background:rgba(0,0,0,0.25);font-size:13px;}
+      .status strong{color:var(--ink);}
+      .hint{margin-top:10px;font-size:12px;color:var(--muted);}
+      #checkout-container{margin-top:16px;min-height:480px;}
+      a{color:var(--accent);text-decoration:none;}
+      a:hover{text-decoration:underline;}
+    </style>
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h1>Secure Checkout</h1>
+        <p>Powered by Paddle. Please keep this tab open while checkout loads.</p>
+        <div class="status" id="status">Loading checkout...</div>
+        <div id="checkout-container"></div>
+        <div class="hint">If you reached this page from the ORBIT extension, you can close it after payment completes.</div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var statusEl = document.getElementById('status');
+        var containerId = 'checkout-container';
+
+        function setStatus(kind, text) {
+          if (!statusEl) return;
+          statusEl.innerHTML = '<strong>' + kind + ':</strong> ' + text;
+        }
+
+        var params = new URLSearchParams(location.search);
+        var txn = params.get('_ptxn') || '';
+        txn = String(txn).trim();
+        if (!txn) {
+          setStatus('Error', 'Missing transaction id. Please restart checkout from the ORBIT extension.');
+          return;
+        }
+
+        // Paddle.js requires a client-side token.
+        // Create one in Paddle Dashboard: Paddle > Developer tools > Authentication.
+        // Replace the value below with your live client-side token.
+        var PADDLE_CLIENT_TOKEN = '';
+
+        if (!PADDLE_CLIENT_TOKEN) {
+          setStatus('Error', 'Checkout is not configured yet. Please contact support.');
+          return;
+        }
+
+        try {
+          Paddle.Initialize({
+            token: PADDLE_CLIENT_TOKEN,
+            checkout: {
+              settings: {
+                displayMode: 'inline',
+                theme: 'dark',
+                frameTarget: containerId,
+                frameInitialHeight: '520',
+                frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;'
+              }
+            }
+          });
+
+          setStatus('Loading', 'Opening secure checkout...');
+          Paddle.Checkout.open({ transactionId: txn });
+        } catch (e) {
+          console.error('[ORBIT] checkout.html failed to open checkout:', e);
+          setStatus('Error', 'Could not open checkout. Please try again.');
+        }
+      })();
+    </script>
+  </body>
+</html>

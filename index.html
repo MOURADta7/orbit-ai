@@ -468,45 +468,14 @@
         </a>
       </div>
 
-      <div class="glass-card rounded-2xl p-6 flex flex-col">
+      <div class="glass-card rounded-2xl p-6 flex flex-col" id="plan-monthly">
         <div class="mb-4">
-          <h3 class="text-lg font-bold text-white">Pay-As-You-Go</h3>
-          <p class="text-sm text-slate-400 mt-1">credits never expire</p>
-        </div>
-        <div class="mb-4">
-          <span class="text-3xl font-black text-white">$9</span>
-          <span class="text-sm text-slate-500"> top-up</span>
-        </div>
-        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>150 replies</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Credits never expire</span>
-          </li>
-        </ul>
-        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
-          Choose Plan
-        </a>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col">
-        <div class="mb-4">
-          <h3 class="text-lg font-bold text-white">Pro Monthly</h3>
+          <h3 class="text-lg font-bold text-white" data-plan-name>Pro Monthly</h3>
           <p class="text-sm text-slate-400 mt-1">For consistent creators</p>
         </div>
         <div class="mb-4">
-          <span class="text-3xl font-black text-white">$12</span>
-          <span class="text-sm text-slate-500">/month</span>
+          <span class="text-3xl font-black text-white" data-plan-price>$12</span>
+          <span class="text-sm text-slate-500" data-plan-period>/month</span>
         </div>
         <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
           <li class="flex items-start gap-2">
@@ -528,25 +497,24 @@
             <span>Priority support</span>
           </li>
         </ul>
-        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-           target="_blank"
-           rel="noopener noreferrer"
+        <a href="#"
+           data-plan-cta
            class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
-          Choose Plan
+          Sign in to Subscribe
         </a>
       </div>
 
-      <div class="glass-card rounded-2xl p-6 flex flex-col relative" style="border-color: rgba(249,115,22,0.5);">
+      <div class="glass-card rounded-2xl p-6 flex flex-col relative" id="plan-annual" style="border-color: rgba(249,115,22,0.5);">
         <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500 to-purple-500 text-white">
           Best Value
         </div>
         <div class="mb-4">
-          <h3 class="text-lg font-bold text-white">Pro Annual</h3>
+          <h3 class="text-lg font-bold text-white" data-plan-name>Pro Annual</h3>
           <p class="text-sm text-slate-400 mt-1">Save 31% vs monthly</p>
         </div>
         <div class="mb-4">
-          <span class="text-3xl font-black text-white">$99</span>
-          <span class="text-sm text-slate-500">/year</span>
+          <span class="text-3xl font-black text-white" data-plan-price>$99</span>
+          <span class="text-sm text-slate-500" data-plan-period>/year</span>
         </div>
         <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
           <li class="flex items-start gap-2">
@@ -568,11 +536,10 @@
             <span>Priority support</span>
           </li>
         </ul>
-        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-           target="_blank"
-           rel="noopener noreferrer"
+        <a href="#"
+           data-plan-cta
            class="w-full py-3 rounded-xl text-sm font-bold text-white btn-primary text-center">
-          Choose Plan
+          Sign in to Subscribe
         </a>
       </div>
 
@@ -580,6 +547,48 @@
 
     <p class="text-center text-sm text-slate-500 mt-8">No hidden fees. Switch or cancel plans anytime.</p>
   </section>
+
+  <script>
+    (function () {
+      var PLANS_URL = 'https://orbit-billing-worker.mourad-taberha.workers.dev/plans';
+
+      function applyPlan(el, plan) {
+        if (!el || !plan) return;
+        var nameEl = el.querySelector('[data-plan-name]');
+        var priceEl = el.querySelector('[data-plan-price]');
+        var periodEl = el.querySelector('[data-plan-period]');
+        if (nameEl) nameEl.textContent = plan.name || nameEl.textContent;
+        if (priceEl) {
+          // Keep existing typography, swap the label only.
+          var m = String(plan.priceLabel || '').match(/^\$(\d+)(?:\/(month|year))?$/);
+          priceEl.textContent = m ? ('$' + m[1]) : (plan.priceLabel || priceEl.textContent);
+        }
+        if (periodEl) {
+          periodEl.textContent = plan.billingPeriod === 'monthly' ? '/month' : '/year';
+        }
+
+        el.querySelectorAll('[data-plan-cta]').forEach(function (cta) {
+          cta.addEventListener('click', function (e) {
+            e.preventDefault();
+            alert('To subscribe, please sign in inside the ORBIT Chrome extension. Website sign-in is coming soon.');
+          });
+        });
+      }
+
+      fetch(PLANS_URL)
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          var plans = Array.isArray(data && data.plans) ? data.plans : [];
+          var monthly = plans.find(function (p) { return p && p.id === 'monthly'; });
+          var annual = plans.find(function (p) { return p && p.id === 'annual'; });
+          applyPlan(document.getElementById('plan-monthly'), monthly);
+          applyPlan(document.getElementById('plan-annual'), annual);
+        })
+        .catch(function () {
+          // If plans fail to load, keep the static copy as-is.
+        });
+    })();
+  </script>
 
   <!-- ───────────────── FINAL CTA ───────────────── -->
   <section class="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
