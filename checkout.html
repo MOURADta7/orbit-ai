@@ -108,22 +108,25 @@
 
           try {
             console.info('[ORBIT checkout] Initializing Paddle checkout');
-            Paddle.Initialize({
-              token: PADDLE_CLIENT_TOKEN,
-              checkout: {
-                settings: {
-                  displayMode: 'inline',
-                  theme: 'dark',
-                  frameTarget: containerId,
-                  frameInitialHeight: '520',
-                  frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;'
-                }
-              }
-            });
+            
+           Paddle.Initialize({
+  token: PADDLE_CLIENT_TOKEN
+});
 
-            setStatus('Loading', 'Loading secure checkout...', 'loading');
-            console.info('[ORBIT checkout] Opening Paddle checkout for transaction:', safeTxnLabel(transactionId));
-            Paddle.Checkout.open({ transactionId: transactionId });
+setStatus('Loading', 'Loading secure checkout...', 'loading');
+console.info('[ORBIT checkout] Opening Paddle checkout for transaction:', safeTxnLabel(transactionId));
+
+Paddle.Checkout.open({
+  transactionId: transactionId,
+  settings: {
+    displayMode: 'inline',
+    theme: 'dark',
+    frameTarget: '#checkout-container',
+    frameInitialHeight: 520,
+    frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;'
+  }
+});
+            
             setStatus('Ready', 'Secure checkout is loading below.', 'ready');
           } catch (error) {
             var details = describeError(error);
