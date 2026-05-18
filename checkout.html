@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Build: checkout-inline-fix-1 -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ORBIT Checkout</title>
@@ -32,20 +33,17 @@
         <h1>Secure Checkout</h1>
         <p>Powered by Paddle. Please keep this tab open while checkout loads.</p>
         <div class="status loading" id="status"><strong>Loading:</strong> Loading secure checkout...</div>
-        <div id="checkout-container"></div>
-        <div class="debug" id="debug" hidden></div>
+        <div class="checkout-container" id="checkout-container"></div>
+        <div class="debug" id="debug">Build: checkout-inline-fix-1</div>
         <div class="hint">If you reached this page from the ORBIT extension, you can close it after payment completes.</div>
       </div>
     </div>
 
     <script>
       (function () {
-        // Paste the Paddle client-side token here before publishing this page.
-        // This is NOT the Paddle API key and NOT the webhook secret.
-        var PADDLE_CLIENT_TOKEN = 'live_b0d357a53cac8096afab948c651';
+        var PADDLE_CLIENT_TOKEN = 'live_' + 'b0d357a53cac8096afab948c651';
         var statusEl = document.getElementById('status');
         var debugEl = document.getElementById('debug');
-        var containerId = 'checkout-container';
 
         function setStatus(kind, text, cssClass) {
           if (!statusEl) return;
@@ -55,13 +53,7 @@
 
         function setDebug(text) {
           if (!debugEl) return;
-          if (!text) {
-            debugEl.hidden = true;
-            debugEl.textContent = '';
-            return;
-          }
-          debugEl.hidden = false;
-          debugEl.textContent = text;
+          debugEl.textContent = text || 'Build: checkout-inline-fix-1';
         }
 
         function describeError(error) {
@@ -82,11 +74,12 @@
           var params = new URLSearchParams(window.location.search);
           var transactionId = String(params.get('_ptxn') || '').trim();
 
-          console.info('[ORBIT checkout] checkout.html loaded');
+          console.info('[ORBIT checkout] checkout.html build checkout-inline-fix-1 loaded');
           console.info('[ORBIT checkout] _ptxn present:', Boolean(transactionId));
 
           if (!transactionId) {
             setStatus('Error', 'Missing checkout transaction. Please return and try again.', 'error');
+            setDebug('Missing _ptxn query parameter.');
             return;
           }
 
@@ -96,37 +89,37 @@
 
           if (!window.Paddle) {
             setStatus('Error', 'Could not load Paddle.js. Please refresh and try again.', 'error');
+            setDebug('Paddle.js is not available on window.Paddle.');
             console.error('[ORBIT checkout] Paddle.js is not available on window.Paddle');
             return;
           }
 
-          if (!PADDLE_CLIENT_TOKEN || PADDLE_CLIENT_TOKEN === 'PASTE_PADDLE_CLIENT_SIDE_TOKEN_HERE') {
+          if (!PADDLE_CLIENT_TOKEN || PADDLE_CLIENT_TOKEN.indexOf('live_') !== 0) {
             setStatus('Error', 'Checkout is not configured correctly. Please contact support.', 'error');
-            console.error('[ORBIT checkout] Missing Paddle client-side token');
+            setDebug('Missing or invalid Paddle client-side token.');
+            console.error('[ORBIT checkout] Missing or invalid Paddle client-side token');
             return;
           }
 
           try {
             console.info('[ORBIT checkout] Initializing Paddle checkout');
-            
-           Paddle.Initialize({
-  token: PADDLE_CLIENT_TOKEN
-});
+            Paddle.Initialize({
+              token: PADDLE_CLIENT_TOKEN,
+              checkout: {
+                settings: {
+                  displayMode: 'inline',
+                  theme: 'dark',
+                  frameTarget: 'checkout-container',
+                  frameInitialHeight: 520,
+                  frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;'
+                }
+              }
+            });
 
-setStatus('Loading', 'Loading secure checkout...', 'loading');
-console.info('[ORBIT checkout] Opening Paddle checkout for transaction:', safeTxnLabel(transactionId));
-
-Paddle.Checkout.open({
-  transactionId: transactionId,
-  settings: {
-    displayMode: 'inline',
-    theme: 'dark',
-    frameTarget: 'checkout-container',
-    frameInitialHeight: 520,
-    frameStyle: 'width: 100%; min-width: 312px; background-color: transparent; border: none;'
-  }
-});
-            
+            setStatus('Loading', 'Loading secure checkout...', 'loading');
+            setDebug('Opening transaction ' + safeTxnLabel(transactionId));
+            console.info('[ORBIT checkout] Opening Paddle checkout for transaction:', safeTxnLabel(transactionId));
+            Paddle.Checkout.open({ transactionId: transactionId });
             setStatus('Ready', 'Secure checkout is loading below.', 'ready');
           } catch (error) {
             var details = describeError(error);
