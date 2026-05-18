@@ -27,7 +27,7 @@
       <div class="card">
         <h1>Secure Checkout</h1>
         <p>Powered by Paddle. Please keep this tab open while checkout loads.</p>
-        <div class="status" id="status">Loading checkout...</div>
+        <div class="status" id="status">Loading secure checkout...</div>
         <div id="checkout-container"></div>
         <div class="hint">If you reached this page from the ORBIT extension, you can close it after payment completes.</div>
       </div>
@@ -47,17 +47,19 @@
         var txn = params.get('_ptxn') || '';
         txn = String(txn).trim();
         if (!txn) {
-          setStatus('Error', 'Missing transaction id. Please restart checkout from the ORBIT extension.');
+          setStatus('Error', 'Missing checkout transaction. Please return and try again.');
           return;
         }
 
         // Paddle.js requires a client-side token.
         // Create one in Paddle Dashboard: Paddle > Developer tools > Authentication.
         // Replace the value below with your live client-side token.
+        // Paddle Dashboard: Paddle > Developer tools > Authentication
         var PADDLE_CLIENT_TOKEN = '';
 
         if (!PADDLE_CLIENT_TOKEN) {
-          setStatus('Error', 'Checkout is not configured yet. Please contact support.');
+          // Keep user-facing messaging simple.
+          setStatus('Error', 'Could not open checkout. Please try again.');
           return;
         }
 
@@ -75,7 +77,7 @@
             }
           });
 
-          setStatus('Loading', 'Opening secure checkout...');
+          setStatus('Loading', 'Loading secure checkout...');
           Paddle.Checkout.open({ transactionId: txn });
         } catch (e) {
           console.error('[ORBIT] checkout.html failed to open checkout:', e);
