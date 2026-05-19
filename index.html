@@ -551,6 +551,123 @@
   <script>
     (function () {
       var PLANS_URL = 'https://orbit-billing-worker.mourad-taberha.workers.dev/plans';
+      var CHECKOUT_URL = 'https://orbit-billing-worker.mourad-taberha.workers.dev/checkout';
+
+      var ORBIT_FIREBASE_CONFIG = {
+        apiKey: 'AIzaSyCehLdSzNwsdeIPNIJNci7Ei7clHhSwVAI',
+        authDomain: 'orbit-ai-b4f6e.firebaseapp.com',
+        projectId: 'orbit-ai-b4f6e',
+        appId: '1:710985835751:web:2e961417656174668c2e42'
+      };
+
+      function ensureModal() {
+        if (document.getElementById('orbit-auth-modal')) return;
+        var modal = document.createElement('div');
+        modal.id = 'orbit-auth-modal';
+        modal.style.cssText = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:9999;padding:18px;';
+        modal.innerHTML =
+          '<div style="width:100%;max-width:420px;border-radius:18px;border:1px solid rgba(255,255,255,0.12);background:rgba(9,12,28,0.96);backdrop-filter: blur(10px);padding:18px;">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">' +
+          '<div style="font-weight:900;color:#fff;letter-spacing:-0.2px;">Sign in to subscribe</div>' +
+          '<button id="orbit-auth-close" style="background:transparent;border:0;color:#9ca3af;font-size:18px;cursor:pointer;">×</button>' +
+          '</div>' +
+          '<div style="color:#9ca3af;font-size:12px;line-height:1.45;margin-bottom:12px;">We use your ORBIT account to link your subscription to your Firestore user.</div>' +
+          '<div style="display:flex;flex-direction:column;gap:10px;">' +
+          '<input id="orbit-auth-email" type="email" placeholder="Email" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;outline:none;" />' +
+          '<input id="orbit-auth-pass" type="password" placeholder="Password" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;outline:none;" />' +
+          '<button id="orbit-auth-signin" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(249,115,22,0.35);background:linear-gradient(135deg,#f97316,#a855f7);color:#fff;font-weight:800;cursor:pointer;">Sign in</button>' +
+          '<div id="orbit-auth-status" style="display:none;font-size:12px;text-align:center;color:#9ca3af;"></div>' +
+          '</div>' +
+          '</div>';
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) hideModal();
+        });
+        document.getElementById('orbit-auth-close')?.addEventListener('click', hideModal);
+      }
+
+      function showModal(message) {
+        ensureModal();
+        var modal = document.getElementById('orbit-auth-modal');
+        var st = document.getElementById('orbit-auth-status');
+        if (st && message) {
+          st.style.display = 'block';
+          st.textContent = message;
+        }
+        if (modal) modal.style.display = 'flex';
+      }
+
+      function hideModal() {
+        var modal = document.getElementById('orbit-auth-modal');
+        if (modal) modal.style.display = 'none';
+      }
+
+      async function loadFirebase() {
+        if (window.__orbitFirebaseLoaded) return window.__orbitFirebaseLoaded;
+        window.__orbitFirebaseLoaded = (async function () {
+          const appMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js');
+          const authMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          const app = appMod.initializeApp(ORBIT_FIREBASE_CONFIG);
+          const auth = authMod.getAuth(app);
+          return { auth, authMod };
+        })();
+        return window.__orbitFirebaseLoaded;
+      }
+
+      async function requireAuth() {
+        const fb = await loadFirebase();
+        if (fb.auth.currentUser) return fb.auth.currentUser;
+        showModal('Please sign in to continue.');
+        return new Promise((resolve, reject) => {
+          const btn = document.getElementById('orbit-auth-signin');
+          const emailEl = document.getElementById('orbit-auth-email');
+          const passEl = document.getElementById('orbit-auth-pass');
+          const st = document.getElementById('orbit-auth-status');
+          if (!btn || !emailEl || !passEl) return reject(new Error('AUTH_UI_MISSING'));
+          btn.onclick = async (e) => {
+            e.preventDefault();
+            const email = String(emailEl.value || '').trim();
+            const pass = String(passEl.value || '').trim();
+            if (!email || !pass) {
+              if (st) { st.style.display = 'block'; st.textContent = 'Enter email and password.'; }
+              return;
+            }
+            try {
+              if (st) { st.style.display = 'block'; st.textContent = 'Signing in...'; }
+              await fb.authMod.signInWithEmailAndPassword(fb.auth, email, pass);
+              hideModal();
+              resolve(fb.auth.currentUser);
+            } catch (err) {
+              if (st) { st.style.display = 'block'; st.textContent = 'Sign-in failed. Please try again.'; }
+            }
+          };
+        });
+      }
+
+      async function startWebsiteCheckout(planId) {
+        const user = await requireAuth();
+        if (!user) return;
+        const idToken = await user.getIdToken();
+        const resp = await fetch(CHECKOUT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + idToken
+          },
+          body: JSON.stringify({ planId: planId, source: 'website' })
+        });
+        if (!resp.ok) {
+          alert('Could not start checkout. Please try again.');
+          return;
+        }
+        const data = await resp.json().catch(() => ({}));
+        if (data?.checkoutUrl) {
+          window.open(data.checkoutUrl, '_blank', 'noopener');
+          return;
+        }
+        alert('Could not start checkout. Please try again.');
+      }
 
       function applyPlan(el, plan) {
         if (!el || !plan) return;
@@ -568,9 +685,10 @@
         }
 
         el.querySelectorAll('[data-plan-cta]').forEach(function (cta) {
+          cta.textContent = 'Choose Plan';
           cta.addEventListener('click', function (e) {
             e.preventDefault();
-            alert('To subscribe, please sign in inside the ORBIT Chrome extension. Website sign-in is coming soon.');
+            startWebsiteCheckout(plan.id);
           });
         });
       }
