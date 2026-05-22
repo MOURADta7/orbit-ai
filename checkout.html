@@ -20,6 +20,7 @@
       .status.loading strong{color:var(--ink);}
       .status.ready strong{color:var(--ok);}
       .hint{margin-top:10px;font-size:12px;color:var(--muted);}
+      .account-note{margin-top:14px;padding:12px 12px;border-radius:12px;border:1px solid rgba(249,115,22,0.28);background:rgba(249,115,22,0.08);color:var(--ink);font-size:13px;line-height:1.5;}
       #checkout-container{margin-top:16px;min-height:520px;}
       .debug{margin-top:10px;font-size:12px;color:var(--muted);word-break:break-word;}
       a{color:var(--accent);text-decoration:none;}
@@ -32,6 +33,7 @@
       <div class="card">
         <h1>Secure Checkout</h1>
         <p>Powered by Paddle. Please keep this tab open while checkout loads.</p>
+        <div class="account-note">Use the same email as your ORBIT account. Your Pro access is linked to your signed-in ORBIT account.</div>
         <div class="status loading" id="status"><strong>Loading:</strong> Loading secure checkout...</div>
         <div class="checkout-container" id="checkout-container"></div>
         <div class="debug" id="debug">Build: checkout-inline-fix-1</div>
