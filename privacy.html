@@ -139,7 +139,7 @@
     <p class="text-slate-400 max-w-xl mx-auto text-base leading-relaxed">
       ORBIT is built with a privacy-first philosophy. This document explains exactly what data we collect, how we use it, and — more importantly — what we <em>never</em> do with it.
     </p>
-    <p class="text-xs text-slate-600 mt-4">Last updated: April 14, 2025 &nbsp;·&nbsp; Effective: April 14, 2025</p>
+    <p class="text-xs text-slate-600 mt-4">Last updated: June 8, 2026 &nbsp;·&nbsp; Effective: June 8, 2026</p>
   </header>
 
   <!-- Policy Content -->
@@ -167,13 +167,75 @@
         <li><strong>Page content on supported platforms</strong> (e.g., AppSumo, Gumroad) — specifically comment text visible on product pages you actively visit.</li>
         <li><strong>Your product configuration</strong> — product name, product description, and support email address that <em>you</em> enter into ORBIT's settings panel. This data is stored only in your browser's local storage (<code>chrome.storage.local</code>).</li>
         <li><strong>Authentication state</strong> — if you sign in to ORBIT, your Firebase authentication token and user ID are stored locally to maintain your session and credit balance. We never store your password.</li>
-        <li><strong>License key</strong> — if you activate a paid plan, your Creem license key is stored locally and verified against Creem's servers to confirm validity.</li>
+        <li><strong>Subscription status</strong> — if you activate a paid plan, ORBIT stores your subscription state and account linkage needed to verify paid access through Paddle and ORBIT's backend services.</li>
       </ul>
 
       <hr class="mt-8"/>
 
+      <h2>3. Data Collection &amp; Processing Summary</h2>
+      <p>The following table summarizes all data collected, processed, or stored by ORBIT:</p>
+      <div class="mt-4 overflow-x-auto rounded-xl border border-white/10">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-white/5">
+            <tr>
+              <th class="px-4 py-3 text-slate-200 font-semibold">Data Type</th>
+              <th class="px-4 py-3 text-slate-200 font-semibold">How Collected</th>
+              <th class="px-4 py-3 text-slate-200 font-semibold">Purpose</th>
+              <th class="px-4 py-3 text-slate-200 font-semibold">Stored Where</th>
+              <th class="px-4 py-3 text-slate-200 font-semibold">Shared With</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/10">
+            <tr>
+              <td class="px-4 py-3 text-slate-300">Email &amp; Name</td>
+              <td class="px-4 py-3 text-slate-300">Google Sign-in or Email registration</td>
+              <td class="px-4 py-3 text-slate-300">Authentication and account management</td>
+              <td class="px-4 py-3 text-slate-300">Firebase Auth / Firebase Firestore</td>
+              <td class="px-4 py-3 text-slate-300">Google Firebase only</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-slate-300">User ID</td>
+              <td class="px-4 py-3 text-slate-300">Firebase Authentication</td>
+              <td class="px-4 py-3 text-slate-300">Session and subscription management</td>
+              <td class="px-4 py-3 text-slate-300">Firebase Auth / Firebase Firestore</td>
+              <td class="px-4 py-3 text-slate-300">Google Firebase only</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-slate-300">Page Content (comments)</td>
+              <td class="px-4 py-3 text-slate-300">Content Script on supported platforms</td>
+              <td class="px-4 py-3 text-slate-300">AI reply generation only</td>
+              <td class="px-4 py-3 text-slate-300">Not stored by ORBIT</td>
+              <td class="px-4 py-3 text-slate-300">Google Gemini API transiently for generating the requested reply</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-slate-300">Extension Settings</td>
+              <td class="px-4 py-3 text-slate-300">User input in the extension</td>
+              <td class="px-4 py-3 text-slate-300">Extension functionality</td>
+              <td class="px-4 py-3 text-slate-300">Browser local storage only</td>
+              <td class="px-4 py-3 text-slate-300">Nobody</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-slate-300">Auth Token</td>
+              <td class="px-4 py-3 text-slate-300">Firebase Authentication</td>
+              <td class="px-4 py-3 text-slate-300">Session management</td>
+              <td class="px-4 py-3 text-slate-300">Browser local storage only</td>
+              <td class="px-4 py-3 text-slate-300">Nobody</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 text-slate-300">Subscription Status</td>
+              <td class="px-4 py-3 text-slate-300">Paddle checkout/webhook via ORBIT backend</td>
+              <td class="px-4 py-3 text-slate-300">Feature access control and subscription verification</td>
+              <td class="px-4 py-3 text-slate-300">Firebase Firestore / ORBIT backend</td>
+              <td class="px-4 py-3 text-slate-300">Paddle for billing only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr class="mt-8"/>
+
       <!-- 3. Local Processing — Critical clause -->
-      <h2>3. Local Processing &amp; Data Security</h2>
+      <h2>4. Local Processing &amp; Data Security</h2>
       <div class="highlight-box">
         <p>
           <strong style="color:#fb923c;">⚡ Core Privacy Commitment:</strong> All comment analysis, sentiment scoring,
@@ -193,7 +255,7 @@
       <hr class="mt-8"/>
 
       <!-- 4. No Data Selling -->
-      <h2>4. Sharing &amp; Sale of Data</h2>
+      <h2>5. Sharing &amp; Sale of Data</h2>
       <div class="highlight-box">
         <p>
           <strong style="color:#fb923c;">We do not sell, rent, or trade your personal data to third parties.</strong>
@@ -203,14 +265,14 @@
       <p>We may share limited, non-personal information only in the following circumstances:</p>
       <ul class="mt-3">
         <li><strong>Service providers:</strong> We use Google Firebase for authentication and Google Gemini for AI generation. These providers have their own privacy policies and are bound by data processing agreements.</li>
-        <li><strong>License verification:</strong> Your license key is shared with Creem solely to verify activation status and plan tier.</li>
+        <li><strong>Subscription billing:</strong> Payment and subscription metadata are shared with Paddle solely to process billing events and verify access to paid features.</li>
         <li><strong>Legal compliance:</strong> We may disclose information if required by law or to protect the rights and safety of users, provided we are legally compelled to do so.</li>
       </ul>
 
       <hr class="mt-8"/>
 
       <!-- 5. Limited Use -->
-      <h2>5. Limited Use Policy</h2>
+      <h2>6. Limited Use Policy</h2>
       <p>
         ORBIT's access to page content is strictly limited and purposeful:
       </p>
@@ -223,25 +285,25 @@
       <p class="mt-3">
         This extension complies with the
         <strong>Chrome Web Store's Limited Use Policy</strong> and Google's requirements for extensions
-        that request <code>activeTab</code>, <code>storage</code>, and host permissions.
+        that request <code>storage</code>, authentication access, and limited host permissions.
       </p>
 
       <hr class="mt-8"/>
 
       <!-- 6. Third Party Services -->
-      <h2>6. Third-Party Services</h2>
+      <h2>7. Third-Party Services</h2>
       <p>ORBIT integrates with the following third-party services. Each operates under its own privacy policy:</p>
       <ul class="mt-3">
         <li><strong>Google Firebase</strong> — Authentication and user account management. <a href="https://firebase.google.com/support/privacy" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Firebase Privacy Policy</a></li>
         <li><strong>Google Gemini API</strong> — AI text generation. Comment text is sent to Gemini to generate a reply draft. <a href="https://ai.google.dev/terms" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Gemini API Terms</a></li>
-        <li><strong>Creem</strong> — License key validation. <a href="https://www.creem.io/privacy" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Creem Privacy Policy</a></li>
+        <li><strong>Paddle</strong> — Subscription billing and payment processing. <a href="https://www.paddle.com/legal/privacy" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Paddle Privacy Policy</a></li>
         <li><strong>Cloudflare Workers</strong> — Serverless proxy for managed AI requests. Requests are not logged or stored. <a href="https://www.cloudflare.com/privacypolicy/" class="text-orange-400 hover:text-orange-300 underline underline-offset-2">Cloudflare Privacy Policy</a></li>
       </ul>
 
       <hr class="mt-8"/>
 
       <!-- 7. Data Retention -->
-      <h2>7. Data Retention &amp; Deletion</h2>
+      <h2>8. Data Retention &amp; Deletion</h2>
       <p>
         Since ORBIT stores settings and authentication data locally in your browser, you have full control over
         your data at all times:
@@ -249,14 +311,14 @@
       <ul class="mt-3">
         <li>You can clear all ORBIT data by uninstalling the extension. Chrome will remove all associated local storage.</li>
         <li>You can sign out of ORBIT at any time from the extension popup. This clears your authentication token from local storage.</li>
-        <li>You can deactivate your license key from within the extension settings.</li>
+        <li>You can cancel or manage your subscription through Paddle or by contacting ORBIT support.</li>
         <li>If you created a Firebase account with ORBIT, you may request account deletion by contacting us at the email address below.</li>
       </ul>
 
       <hr class="mt-8"/>
 
       <!-- 8. Children's Privacy -->
-      <h2>8. Children's Privacy</h2>
+      <h2>9. Children's Privacy</h2>
       <p>
         ORBIT is not directed toward children under the age of 13. We do not knowingly collect personal
         information from children under 13. If you believe a child under 13 has provided us with personal
@@ -266,7 +328,7 @@
       <hr class="mt-8"/>
 
       <!-- 9. Changes -->
-      <h2>9. Changes to This Policy</h2>
+      <h2>10. Changes to This Policy</h2>
       <p>
         We may update this Privacy Policy periodically. Any changes will be reflected by updating the
         "Last Updated" date at the top of this page. We encourage you to review this policy from time to time.
@@ -276,7 +338,7 @@
       <hr class="mt-8"/>
 
       <!-- 10. Contact -->
-      <h2>10. Contact Us</h2>
+      <h2>11. Contact Us</h2>
       <p>
         If you have any questions, concerns, or requests regarding this Privacy Policy or your data,
         please reach out to us:
