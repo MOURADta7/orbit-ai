@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Automation & Product Systems — ORBIT AI</title>
+  <meta name="description" content="Custom AI agents, workflow automation and product systems for SaaS, education and multilingual operations — designed by Mourad Taberha." />
+  <meta property="og:title" content="AI Automation & Product Systems — ORBIT AI" />
+  <meta property="og:description" content="Reliable AI workflows, integrations and product systems with human approval, testing and documentation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://orbitai.space/automation/" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=101" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=101" />
+  <link rel="shortcut icon" href="/favicon.ico?v=101" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=101" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          animation: {
+            'aurora-1': 'aurora1 18s ease-in-out infinite',
+            'aurora-2': 'aurora2 22s ease-in-out infinite'
+          },
+          keyframes: {
+            aurora1: {
+              '0%,100%': { transform: 'translate(0,0) scale(1)', opacity: '.52' },
+              '50%': { transform: 'translate(12%,-10%) scale(1.15)', opacity: '.72' }
+            },
+            aurora2: {
+              '0%,100%': { transform: 'translate(0,0) scale(1)', opacity: '.42' },
+              '50%': { transform: 'translate(-12%,8%) scale(1.2)', opacity: '.65' }
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root { color-scheme: dark; }
+    body { font-family: 'Inter', sans-serif; }
+    .aurora-blob { position:absolute; border-radius:9999px; filter:blur(90px); pointer-events:none; }
+    .glass-card { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); }
+    .gradient-text { background:linear-gradient(135deg,#f97316 0%,#fb923c 38%,#a855f7 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .btn-primary { background:linear-gradient(135deg,#f97316,#ea580c 55%,#c2410c); box-shadow:0 0 42px rgba(249,115,22,.32); transition:.25s ease; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 58px rgba(249,115,22,.48); }
+    .btn-secondary { border:1px solid rgba(148,163,184,.32); background:rgba(15,23,42,.48); transition:.25s ease; }
+    .btn-secondary:hover { border-color:rgba(249,115,22,.62); background:rgba(249,115,22,.08); transform:translateY(-2px); }
+    .grid-overlay { background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px); background-size:60px 60px; }
+    .focus-ring:focus-visible { outline:2px solid #fb923c; outline-offset:3px; }
+    .step-active { border-color:rgba(249,115,22,.55)!important; background:rgba(249,115,22,.08)!important; }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; scroll-behavior:auto!important; } }
+  </style>
+</head>
+
+<body class="dark bg-slate-950 text-slate-50 overflow-x-hidden selection:bg-orange-500/30">
+  <div class="fixed inset-0 overflow-hidden z-0" aria-hidden="true">
+    <div class="aurora-blob animate-aurora-1" style="width:620px;height:620px;top:-18%;left:-12%;background:radial-gradient(circle,rgba(249,115,22,.32) 0%,transparent 70%);"></div>
+    <div class="aurora-blob animate-aurora-2" style="width:720px;height:720px;top:18%;right:-18%;background:radial-gradient(circle,rgba(168,85,247,.26) 0%,transparent 70%);"></div>
+    <div class="absolute inset-0 grid-overlay"></div>
+  </div>
+
+  <nav class="relative z-20 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+    <a href="/" class="focus-ring flex items-center gap-2 rounded-lg" aria-label="ORBIT home">
+      <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#f97316,#a855f7);">✦</span>
+      <span class="font-extrabold text-lg tracking-tight">ORBIT AI</span>
+    </a>
+    <div class="hidden md:flex items-center gap-7 text-sm text-slate-400">
+      <a class="focus-ring rounded hover:text-white" href="#services">Services</a>
+      <a class="focus-ring rounded hover:text-white" href="#work">Selected Work</a>
+      <a class="focus-ring rounded hover:text-white" href="#demo">Workflow Preview</a>
+      <a class="focus-ring rounded hover:text-white" href="#process">Process</a>
+    </div>
+    <a href="mailto:support@orbitai.space?subject=AI%20Automation%20Project"
+       class="focus-ring inline-flex items-center px-4 py-2.5 rounded-xl text-sm font-bold btn-primary">Discuss a Project</a>
+  </nav>
+
+  <main class="relative z-10">
+    <section class="max-w-6xl mx-auto px-6 pt-20 md:pt-28 pb-24">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-slate-300 mb-8">
+          Independent AI Automation &amp; Product Systems Builder
+        </div>
+        <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] mb-7">
+          AI Automation for SaaS,<br />
+          <span class="gradient-text">Education &amp; Multilingual Operations.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-slate-400 leading-relaxed max-w-3xl mb-10">
+          I design reliable agents, integrations and internal systems that turn repetitive operational work into controlled,
+          testable workflows — with human approval where judgment matters.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="mailto:support@orbitai.space?subject=AI%20Automation%20Project"
+             class="focus-ring inline-flex justify-center items-center px-8 py-4 rounded-2xl text-lg font-bold btn-primary">
+            Describe Your Workflow
+          </a>
+          <a href="#work" class="focus-ring inline-flex justify-center items-center px-8 py-4 rounded-2xl text-lg font-bold btn-secondary">
+            Review Selected Work
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-16 grid sm:grid-cols-3 gap-4">
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.17em] text-slate-500 mb-2">Languages</p>
+          <p class="font-bold">Arabic • French • English</p>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.17em] text-slate-500 mb-2">Delivery Standard</p>
+          <p class="font-bold">Testing • Logging • Documentation</p>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.17em] text-slate-500 mb-2">Operating Model</p>
+          <p class="font-bold">Human-in-the-Loop by Design</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Services</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">From Workflow Analysis to a Working System</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">AI Agents &amp; Workflow Automation</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Task-specific agents, approval gates, routing logic, retries and exception handling using the stack that fits the operation.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">Lead Qualification &amp; Follow-up</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Capture, deduplicate, enrich, score and route leads, then create multilingual responses and follow-up actions.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">API, CRM &amp; Webhook Integrations</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Connect forms, email, calendars, spreadsheets, CRMs and external services through APIs and webhooks.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">Customer Support Automation</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Triage messages, surface risk, draft responses and escalate sensitive cases without removing human control.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">Process Mapping &amp; Automation Roadmaps</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Identify where automation creates value, what should stay manual and which workflow should be built first.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="text-xl font-bold mb-3">AI Video Production Systems</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Structured pipelines for prompts, assets, image/video generation, review, editing and publishing.</p>
+        </article>
+      </div>
+      <p class="text-center text-sm text-slate-500 mt-8">
+        Tooling can include Lindy, n8n, Make, direct APIs, webhooks, OpenAI, Gemini, spreadsheets and custom application code — selected according to the workflow.
+      </p>
+    </section>
+
+    <section id="work" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Selected Work</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">Products and Systems Built Around Real Operations</h2>
+      </div>
+
+      <div class="space-y-6">
+        <article class="glass-card rounded-3xl p-8 md:p-10 grid lg:grid-cols-[.9fr_1.1fr] gap-8">
+          <div>
+            <p class="text-xs text-orange-300 font-bold uppercase tracking-[.17em] mb-3">Live Chrome Product</p>
+            <h3 class="text-3xl font-black mb-4">ORBIT AI</h3>
+            <p class="text-slate-400 leading-relaxed mb-6">
+              AI-assisted customer-success extension that analyzes page context, detects refund risk and produces a reply draft for human review.
+            </p>
+            <div class="flex flex-wrap gap-3">
+              <a href="/" class="focus-ring px-4 py-2 rounded-xl font-bold btn-secondary">Product Website</a>
+              <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+                 target="_blank" rel="noopener noreferrer"
+                 class="focus-ring px-4 py-2 rounded-xl font-bold btn-primary">Chrome Web Store</a>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-slate-900/55 border border-slate-800 p-6">
+            <p class="text-sm font-bold text-white mb-4">My role</p>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li>• Product definition and workflow design</li>
+              <li>• Browser extension behavior and risk-scoring experience</li>
+              <li>• Gemini integration and contextual response flow</li>
+              <li>• Authentication, subscription and privacy architecture</li>
+              <li>• Website, positioning and product delivery</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="glass-card rounded-3xl p-8 md:p-10 grid lg:grid-cols-[.9fr_1.1fr] gap-8">
+          <div>
+            <p class="text-xs text-purple-300 font-bold uppercase tracking-[.17em] mb-3">Private Product in Development</p>
+            <h3 class="text-3xl font-black mb-4">MODIR</h3>
+            <p class="text-slate-400 leading-relaxed">
+              Offline-first school management and intelligent scheduling platform designed around complex Algerian education rules,
+              director overrides, constraint handling and desktop deployment.
+            </p>
+          </div>
+          <div class="rounded-2xl bg-slate-900/55 border border-slate-800 p-6">
+            <p class="text-sm font-bold text-white mb-4">System scope</p>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li>• Requirements and domain-rule analysis</li>
+              <li>• Scheduling and generation workflow design</li>
+              <li>• React, TypeScript, Rust, Tauri and SQLite architecture</li>
+              <li>• Error handling, manual controls and print workflows</li>
+              <li>• Product management from problem to implementation</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="glass-card rounded-3xl p-8 md:p-10 grid lg:grid-cols-[.9fr_1.1fr] gap-8">
+          <div>
+            <p class="text-xs text-cyan-300 font-bold uppercase tracking-[.17em] mb-3">Production Workflow Systems</p>
+            <h3 class="text-3xl font-black mb-4">AI Video Production</h3>
+            <p class="text-slate-400 leading-relaxed">
+              Repeatable systems for historical and educational video production: prompt structure, image/video generation,
+              asset organization, continuity, editing, audio and publishing.
+            </p>
+          </div>
+          <div class="rounded-2xl bg-slate-900/55 border border-slate-800 p-6">
+            <p class="text-sm font-bold text-white mb-4">Workflow focus</p>
+            <ul class="space-y-3 text-sm text-slate-300">
+              <li>• Prompt and shot-system design</li>
+              <li>• Asset naming and production tracking</li>
+              <li>• Model selection and generation planning</li>
+              <li>• Editing, transitions, audio and publishing flow</li>
+              <li>• Cost and turnaround optimization</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="demo" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Interactive Workflow Preview</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">Multilingual Lead Qualification Agent</h2>
+        <p class="text-slate-400 max-w-3xl mx-auto mt-4 leading-relaxed">
+          This browser-only sample demonstrates the workflow structure with sample data.
+          A production implementation connects to your CRM, email, calendar and selected AI provider.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-[.9fr_1.1fr] gap-6">
+        <div class="glass-card rounded-3xl p-7">
+          <label for="lead-input" class="block text-sm font-bold mb-3">Incoming lead message</label>
+          <textarea id="lead-input" rows="7"
+                    class="focus-ring w-full rounded-2xl border border-slate-700 bg-slate-950/70 p-4 text-sm text-slate-200 resize-y"
+                    placeholder="Paste a sample lead message">Bonjour, nous avons environ 300 prospects par mois. Nous cherchons une solution pour les qualifier automatiquement et synchroniser les résultats avec notre CRM. Pouvez-vous organiser une démonstration cette semaine ?</textarea>
+
+          <label for="lead-language" class="block text-sm font-bold mt-5 mb-3">Language handling</label>
+          <select id="lead-language" class="focus-ring w-full rounded-xl border border-slate-700 bg-slate-950/70 p-3 text-sm text-slate-200">
+            <option value="auto">Detect automatically</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="ar">Arabic</option>
+          </select>
+
+          <button id="run-demo" type="button" class="focus-ring w-full mt-5 py-3.5 rounded-xl font-bold btn-primary">Run Workflow Preview</button>
+          <p class="text-xs text-slate-500 mt-3">No text leaves this page. This preview uses simple local rules, not a live AI or CRM connection.</p>
+        </div>
+
+        <div class="glass-card rounded-3xl p-7">
+          <div id="demo-empty" class="min-h-[360px] flex items-center justify-center text-center text-slate-500">
+            Run the preview to see classification, missing fields, response draft and structured CRM output.
+          </div>
+
+          <div id="demo-results" class="hidden space-y-5">
+            <div class="grid sm:grid-cols-3 gap-3">
+              <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-4">
+                <p class="text-xs text-slate-500 uppercase tracking-[.14em] mb-1">Language</p>
+                <p id="result-language" class="font-bold">—</p>
+              </div>
+              <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-4">
+                <p class="text-xs text-slate-500 uppercase tracking-[.14em] mb-1">Qualification</p>
+                <p id="result-score" class="font-bold">—</p>
+              </div>
+              <div class="rounded-xl bg-slate-950/60 border border-slate-800 p-4">
+                <p class="text-xs text-slate-500 uppercase tracking-[.14em] mb-1">Next Action</p>
+                <p id="result-action" class="font-bold">—</p>
+              </div>
+            </div>
+
+            <div>
+              <p class="text-sm font-bold mb-2">Detected buying signals</p>
+              <ul id="result-signals" class="text-sm text-slate-300 space-y-2"></ul>
+            </div>
+
+            <div>
+              <p class="text-sm font-bold mb-2">Missing data</p>
+              <p id="result-missing" class="text-sm text-slate-400"></p>
+            </div>
+
+            <div>
+              <p class="text-sm font-bold mb-2">Draft response</p>
+              <div id="result-draft" class="rounded-xl bg-slate-950/65 border border-slate-800 p-4 text-sm text-slate-300 leading-relaxed"></div>
+            </div>
+
+            <div>
+              <p class="text-sm font-bold mb-2">CRM-ready JSON</p>
+              <pre id="result-json" class="rounded-xl bg-black/45 border border-slate-800 p-4 text-xs text-green-300 whitespace-pre-wrap overflow-x-auto"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Delivery Process</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">A Controlled Path From Problem to Deployment</h2>
+      </div>
+      <div class="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">01</p><p class="font-bold">Discover</p><p class="text-xs text-slate-500 mt-2">Business goal and constraints</p></div>
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">02</p><p class="font-bold">Map</p><p class="text-xs text-slate-500 mt-2">Inputs, decisions and exceptions</p></div>
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">03</p><p class="font-bold">Build</p><p class="text-xs text-slate-500 mt-2">Agent, integrations and UI</p></div>
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">04</p><p class="font-bold">Test</p><p class="text-xs text-slate-500 mt-2">Happy paths and edge cases</p></div>
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">05</p><p class="font-bold">Deploy</p><p class="text-xs text-slate-500 mt-2">Controlled production release</p></div>
+        <div class="glass-card rounded-2xl p-5"><p class="text-2xl font-black gradient-text mb-2">06</p><p class="font-bold">Handover</p><p class="text-xs text-slate-500 mt-2">Documentation and support</p></div>
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+      <div class="glass-card rounded-3xl p-10 md:p-16">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Start With One High-Value Workflow</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-5">Describe the Process That Costs Your Team Time</h2>
+        <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-9">
+          I will help separate what should be automated, what should stay under human control and what a practical first version should include.
+        </p>
+        <a href="mailto:support@orbitai.space?subject=AI%20Automation%20Project&body=Business%20process%3A%0AExisting%20tools%3A%0ADesired%20outcome%3A"
+           class="focus-ring inline-flex justify-center items-center px-9 py-4 rounded-2xl text-lg font-bold btn-primary">Email Project Details</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 border-t border-slate-800/90 px-6 py-10">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between">
+      <div>
+        <p class="font-bold">Mourad Taberha</p>
+        <p class="text-xs text-slate-500 mt-1">SaaS Project Manager &amp; AI Automation Builder • © 2026 ORBIT AI</p>
+      </div>
+      <nav class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
+        <a class="focus-ring rounded hover:text-white" href="/">ORBIT Product</a>
+        <a class="focus-ring rounded hover:text-white" href="/privacy.html">Privacy</a>
+        <a class="focus-ring rounded hover:text-white" href="/terms.html">Terms</a>
+        <a class="focus-ring rounded hover:text-white" href="mailto:support@orbitai.space">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var button = document.getElementById('run-demo');
+      var input = document.getElementById('lead-input');
+      var languageSelect = document.getElementById('lead-language');
+
+      function detectLanguage(text, selected) {
+        if (selected !== 'auto') return selected;
+        if (/[\u0600-\u06FF]/.test(text)) return 'ar';
+        if (/\b(bonjour|nous|cherchons|prospects|démonstration|semaine|pouvez|solution)\b/i.test(text)) return 'fr';
+        return 'en';
+      }
+
+      function hasAny(text, terms) {
+        var lowered = text.toLowerCase();
+        return terms.some(function (term) { return lowered.indexOf(term) !== -1; });
+      }
+
+      function responseFor(language, classification) {
+        if (language === 'ar') {
+          return classification === 'Hot'
+            ? 'شكرًا لتوضيح احتياجكم. يبدو أن لديكم حجم عمل وحالة استخدام واضحة. أقترح اجتماعًا قصيرًا لرسم مسار البيانات والتكاملات وتحديد نسخة أولى قابلة للتسليم. ما نظام إدارة العملاء الذي تستخدمونه، وما الوقت المناسب هذا الأسبوع؟'
+            : 'شكرًا لتواصلكم. يمكنني مساعدتكم في تحديد الخطوات المناسبة للأتمتة، لكن أحتاج أولًا إلى معرفة حجم العمل الحالي والأدوات المستخدمة والنتيجة المطلوبة.';
+        }
+        if (language === 'fr') {
+          return classification === 'Hot'
+            ? 'Merci pour ces précisions. Votre volume et votre besoin d’intégration sont suffisamment clairs pour définir un premier workflow. Je vous propose un court échange afin de cartographier les données, le CRM et les règles de qualification. Quel CRM utilisez-vous et quel créneau vous convient cette semaine ?'
+            : 'Merci pour votre message. Je peux vous aider à identifier les étapes à automatiser. Pour cadrer une première version, j’aurais besoin de connaître votre volume mensuel, vos outils actuels et le résultat attendu.';
+        }
+        return classification === 'Hot'
+          ? 'Thanks for the detail. Your lead volume and integration requirement are clear enough to scope a first workflow. I suggest a short call to map the data, CRM fields and qualification rules. Which CRM are you using, and what time works this week?'
+          : 'Thanks for reaching out. I can help identify the right automation path. To scope a first version, I need your monthly volume, current tools and the outcome you want.';
+      }
+
+      function runPreview() {
+        var text = String(input.value || '').trim();
+        if (!text) {
+          input.focus();
+          return;
+        }
+
+        var language = detectLanguage(text, languageSelect.value);
+        var signals = [];
+        var score = 20;
+
+        if (hasAny(text, ['300', '100', '200', 'prospects', 'leads', 'customers', 'clients', 'عملاء', 'عميل'])) {
+          signals.push('Meaningful recurring volume');
+          score += 25;
+        }
+        if (hasAny(text, ['crm', 'salesforce', 'hubspot', 'zoho', 'monday', 'sheets', 'نظام', 'تكامل'])) {
+          signals.push('Existing system or integration requirement');
+          score += 20;
+        }
+        if (hasAny(text, ['demo', 'démonstration', 'meeting', 'call', 'this week', 'cette semaine', 'اجتماع', 'هذا الأسبوع'])) {
+          signals.push('Requests a concrete next step');
+          score += 25;
+        }
+        if (hasAny(text, ['budget', '$', '€', 'usd', 'eur', 'ميزانية'])) {
+          signals.push('Budget signal present');
+          score += 20;
+        }
+        if (!signals.length) signals.push('Initial interest; discovery data still limited');
+
+        score = Math.min(score, 100);
+        var classification = score >= 65 ? 'Hot' : (score >= 40 ? 'Warm' : 'Cold');
+        var action = classification === 'Hot' ? 'Book discovery call' : (classification === 'Warm' ? 'Request missing details' : 'Nurture / low priority');
+
+        var missing = [];
+        if (!/@/.test(text)) missing.push('email');
+        if (!/\+?\d[\d\s().-]{7,}/.test(text)) missing.push('phone');
+        if (!hasAny(text, ['crm', 'salesforce', 'hubspot', 'zoho', 'monday'])) missing.push('current CRM');
+        if (!hasAny(text, ['budget', '$', '€', 'usd', 'eur', 'ميزانية'])) missing.push('budget range');
+
+        var languageNames = { en: 'English', fr: 'French', ar: 'Arabic' };
+        document.getElementById('demo-empty').classList.add('hidden');
+        document.getElementById('demo-results').classList.remove('hidden');
+        document.getElementById('result-language').textContent = languageNames[language];
+        document.getElementById('result-score').textContent = classification + ' • ' + score + '/100';
+        document.getElementById('result-action').textContent = action;
+        document.getElementById('result-missing').textContent = missing.length ? missing.join(', ') : 'No essential fields detected as missing.';
+        document.getElementById('result-draft').textContent = responseFor(language, classification);
+
+        var signalList = document.getElementById('result-signals');
+        signalList.innerHTML = '';
+        signals.forEach(function (signal) {
+          var item = document.createElement('li');
+          item.textContent = '✓ ' + signal;
+          signalList.appendChild(item);
+        });
+
+        var structured = {
+          language: language,
+          qualification: classification.toLowerCase(),
+          score: score,
+          next_action: action,
+          missing_fields: missing,
+          requires_human_review: true
+        };
+        document.getElementById('result-json').textContent = JSON.stringify(structured, null, 2);
+      }
+
+      button.addEventListener('click', runPreview);
+    })();
+  </script>
+</body>
+</html>
