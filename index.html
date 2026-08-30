@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ORBIT — Stop Refund Risks Before They Happen</title>
-  <meta name="description" content="ORBIT is a smart Chrome extension that detects angry customers, analyzes refund risks, and generates persuasive, human-like replies in seconds." />
-  <meta property="og:title" content="ORBIT — AI Co-Founder for Customer Success" />
-  <meta property="og:description" content="Stop Refund Risks Before They Happen. Auto-scan comments, detect risk, and reply in 1 click." />
+  <title>ORBIT — AI Customer Success Chrome Extension</title>
+  <meta name="description" content="ORBIT detects customer frustration, scores refund risk, and drafts contextual AI replies directly inside supported marketplace pages." />
+  <meta property="og:title" content="ORBIT — AI Customer Success Inside Your Browser" />
+  <meta property="og:description" content="Detect refund risk early and draft clear, contextual customer replies without leaving the page." />
   <meta property="og:type" content="website" />
-  
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=100" />
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=100" />
-<link rel="shortcut icon" href="/favicon.ico?v=100" type="image/x-icon" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=100" />
-<link rel="manifest" href="/site.webmanifest?v=100" />
-  
+  <meta property="og:url" content="https://orbitai.space/" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=101" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=101" />
+  <link rel="shortcut icon" href="/favicon.ico?v=101" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=101" />
+  <link rel="manifest" href="/site.webmanifest?v=101" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -29,36 +31,31 @@
           colors: {
             brand: {
               orange: '#f97316',
-              'orange-light': '#fb923c',
-              purple: '#a855f7',
-              'purple-dark': '#7c3aed',
+              purple: '#a855f7'
             }
           },
           animation: {
             'aurora-1': 'aurora1 18s ease-in-out infinite',
             'aurora-2': 'aurora2 22s ease-in-out infinite',
             'aurora-3': 'aurora3 15s ease-in-out infinite',
-            'float': 'float 6s ease-in-out infinite',
-            'pulse-slow': 'pulse 4s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite'
           },
           keyframes: {
             aurora1: {
-              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.6' },
-              '33%': { transform: 'translate(10%, -15%) scale(1.15)', opacity: '0.8' },
-              '66%': { transform: 'translate(-8%, 10%) scale(0.9)', opacity: '0.5' },
+              '0%, 100%': { transform: 'translate(0,0) scale(1)', opacity: '0.55' },
+              '50%': { transform: 'translate(12%,-10%) scale(1.14)', opacity: '0.75' }
             },
             aurora2: {
-              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.5' },
-              '50%': { transform: 'translate(-12%, 8%) scale(1.2)', opacity: '0.7' },
+              '0%, 100%': { transform: 'translate(0,0) scale(1)', opacity: '0.45' },
+              '50%': { transform: 'translate(-12%,8%) scale(1.2)', opacity: '0.68' }
             },
             aurora3: {
-              '0%, 100%': { transform: 'translate(0%, 0%) scale(1)', opacity: '0.4' },
-              '40%': { transform: 'translate(15%, 5%) scale(1.1)', opacity: '0.65' },
-              '80%': { transform: 'translate(-5%, -10%) scale(0.95)', opacity: '0.35' },
+              '0%, 100%': { transform: 'translate(0,0) scale(1)', opacity: '0.35' },
+              '50%': { transform: 'translate(8%,-8%) scale(1.12)', opacity: '0.58' }
             },
             float: {
-              '0%, 100%': { transform: 'translateY(0px)' },
-              '50%': { transform: 'translateY(-12px)' },
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' }
             }
           }
         }
@@ -67,518 +64,438 @@
   </script>
 
   <style>
+    :root { color-scheme: dark; }
     body { font-family: 'Inter', sans-serif; }
-
-    .aurora-blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(90px);
-      pointer-events: none;
-    }
-
+    .aurora-blob { position: absolute; border-radius: 9999px; filter: blur(90px); pointer-events: none; }
     .glass-card {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.09);
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.10);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
     }
-
     .btn-primary {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 50%, #c2410c 100%);
-      box-shadow: 0 0 40px rgba(249, 115, 22, 0.4), 0 4px 24px rgba(249, 115, 22, 0.3);
-      transition: all 0.3s ease;
+      background: linear-gradient(135deg,#f97316 0%,#ea580c 50%,#c2410c 100%);
+      box-shadow: 0 0 40px rgba(249,115,22,.34), 0 4px 24px rgba(249,115,22,.24);
+      transition: transform .25s ease, box-shadow .25s ease;
     }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 60px rgba(249, 115, 22, 0.6), 0 8px 32px rgba(249, 115, 22, 0.5);
-    }
-
-    .btn-primary:active { transform: translateY(0px); }
-
-    .step-badge {
-      background: linear-gradient(135deg, #f97316, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 58px rgba(249,115,22,.48), 0 8px 30px rgba(249,115,22,.35); }
+    .btn-secondary { border: 1px solid rgba(148,163,184,.32); background: rgba(15,23,42,.48); transition: .25s ease; }
+    .btn-secondary:hover { border-color: rgba(249,115,22,.62); background: rgba(249,115,22,.08); transform: translateY(-2px); }
     .gradient-text {
-      background: linear-gradient(135deg, #f97316 0%, #fb923c 40%, #a855f7 100%);
+      background: linear-gradient(135deg,#f97316 0%,#fb923c 40%,#a855f7 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .risk-high { color: #f87171; }
-    .risk-med  { color: #fb923c; }
-    .risk-low  { color: #4ade80; }
-
     .grid-overlay {
       background-image:
-        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,.022) 1px, transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.022) 1px, transparent 1px);
       background-size: 60px 60px;
     }
-
-    @keyframes shimmer {
-      0% { background-position: -200% center; }
-      100% { background-position: 200% center; }
-    }
-
-    .shimmer-text {
-      background: linear-gradient(90deg, #fb923c, #f97316, #fdba74, #f97316, #fb923c);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: shimmer 3s linear infinite;
+    .focus-ring:focus-visible { outline: 2px solid #fb923c; outline-offset: 3px; }
+    .risk-high { color: #f87171; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
     }
   </style>
 </head>
 
-<body class="dark bg-slate-900 text-slate-50 overflow-x-hidden">
-
-  <!-- ───────────────── BACKGROUND AURORA ───────────────── -->
+<body class="dark bg-slate-950 text-slate-50 overflow-x-hidden selection:bg-orange-500/30">
   <div class="fixed inset-0 overflow-hidden z-0" aria-hidden="true">
-    <div class="aurora-blob animate-aurora-1"
-         style="width: 600px; height: 600px; top: -15%; left: -10%; background: radial-gradient(circle, rgba(249,115,22,0.35) 0%, transparent 70%);"></div>
-
-    <div class="aurora-blob animate-aurora-2"
-         style="width: 700px; height: 700px; top: 20%; right: -15%; background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);"></div>
-
-    <div class="aurora-blob animate-aurora-3"
-         style="width: 500px; height: 500px; bottom: 5%; left: 30%; background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);"></div>
-
+    <div class="aurora-blob animate-aurora-1" style="width:620px;height:620px;top:-18%;left:-12%;background:radial-gradient(circle,rgba(249,115,22,.34) 0%,transparent 70%);"></div>
+    <div class="aurora-blob animate-aurora-2" style="width:720px;height:720px;top:18%;right:-18%;background:radial-gradient(circle,rgba(168,85,247,.27) 0%,transparent 70%);"></div>
+    <div class="aurora-blob animate-aurora-3" style="width:520px;height:520px;bottom:2%;left:30%;background:radial-gradient(circle,rgba(124,58,237,.22) 0%,transparent 70%);"></div>
     <div class="absolute inset-0 grid-overlay"></div>
   </div>
 
-  <!-- ───────────────── NAVBAR ───────────────── -->
-  <nav class="relative z-10 flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
-    <div class="flex items-center gap-2">
-      <div class="w-8 h-8 rounded-lg flex items-center justify-center"
-           style="background: linear-gradient(135deg, #f97316, #a855f7);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-white">
+  <nav class="relative z-20 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+    <a href="/" class="focus-ring flex items-center gap-2 rounded-lg" aria-label="ORBIT home">
+      <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#f97316,#a855f7);">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="3" fill="currentColor"/>
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
-                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.5"/>
-          <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
-                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.75"/>
+          <circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.5" opacity=".8"/>
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity=".45"/>
         </svg>
-      </div>
-      <span class="font-bold text-lg tracking-tight">ORBIT</span>
+      </span>
+      <span class="font-extrabold text-lg tracking-tight">ORBIT</span>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-7 text-sm text-slate-400">
+      <a class="focus-ring rounded hover:text-white transition-colors" href="#features">Features</a>
+      <a class="focus-ring rounded hover:text-white transition-colors" href="#how-it-works">How It Works</a>
+      <a class="focus-ring rounded hover:text-white transition-colors" href="#pricing">Pricing</a>
+      <a class="focus-ring rounded hover:text-white transition-colors" href="/automation/">Custom Automation</a>
+      <a class="focus-ring rounded hover:text-white transition-colors" href="privacy.html">Privacy</a>
     </div>
 
-    <div class="hidden md:flex items-center gap-8 text-sm text-slate-400">
-      <a href="#features" class="hover:text-white transition-colors duration-200">Features</a>
-      <a href="#how-it-works" class="hover:text-white transition-colors duration-200">How It Works</a>
-      <a href="#pricing" class="hover:text-white transition-colors duration-200">Pricing</a>
-      <a href="privacy.html" class="hover:text-white transition-colors duration-200">Privacy</a>
-    </div>
-
-    <a href="#cta-section"
-       class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white btn-primary">
-      Install ORBIT (Free Trial)
+    <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+       target="_blank" rel="noopener noreferrer"
+       class="focus-ring hidden sm:inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold btn-primary">
+      Install Free
     </a>
   </nav>
 
-  <!-- ───────────────── HERO ───────────────── -->
-  <section class="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-28 text-center">
+  <main class="relative z-10">
+    <section class="max-w-6xl mx-auto px-6 pt-20 md:pt-28 pb-24 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm text-slate-300 mb-8">
+        <span class="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_16px_rgba(74,222,128,.75)]"></span>
+        AI-assisted customer success inside your browser
+      </div>
 
-    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-slate-300 mb-8 animate-pulse-slow">
-      <span>✨</span>
-      <span>Your AI Co-Founder for Customer Success</span>
-    </div>
+      <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.05] mb-7">
+        Spot Refund Risk.<br />
+        <span class="gradient-text">Respond With Context.</span>
+      </h1>
 
-    <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-tight mb-6">
-      Stop Refund Risks<br/>
-      <span class="gradient-text">Before They Happen.</span>
-    </h1>
+      <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed mb-10">
+        ORBIT is a Chrome extension that detects frustrated customers, scores refund risk,
+        and drafts clear, human-reviewed AI replies directly inside supported marketplace pages.
+      </p>
 
-    <p class="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-      ORBIT is a smart Chrome extension that detects angry customers, analyzes refund risks,
-      and generates persuasive, human-like replies in seconds.
-    </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+           target="_blank" rel="noopener noreferrer"
+           class="focus-ring inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg btn-primary">
+          Install ORBIT — 10 Free Replies
+        </a>
+        <a href="/automation/"
+           class="focus-ring inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl text-white font-semibold text-lg btn-secondary">
+          Explore Custom AI Automation
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
 
-    <div id="cta-section" class="flex flex-col items-center gap-4">
-      <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-         id="hero-cta-btn"
-         target="_blank"
-         rel="noopener noreferrer"
-         class="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-white font-bold text-lg btn-primary">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" class="shrink-0">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-        </svg>
-        Install ORBIT (Free Trial)
+      <p class="mt-5 text-sm text-slate-500 max-w-3xl mx-auto leading-relaxed">
+        <span class="text-slate-300 font-semibold">Privacy-first processing:</span>
+        page content is handled locally where possible or sent through encrypted requests to the selected AI provider.
+        ORBIT does not store customer comments or generated replies.
+        <a href="privacy.html" class="text-orange-300 hover:text-orange-200 underline underline-offset-4">Read the policy</a>.
+      </p>
+
+      <div class="mt-16 grid sm:grid-cols-3 gap-4 max-w-3xl mx-auto text-left">
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.18em] text-slate-500 mb-2">Runs Where You Work</p>
+          <p class="font-bold">Chrome Extension</p>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.18em] text-slate-500 mb-2">AI Provider</p>
+          <p class="font-bold">Google Gemini</p>
+        </div>
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs uppercase tracking-[.18em] text-slate-500 mb-2">Control</p>
+          <p class="font-bold">Human Review Before Reply</p>
+        </div>
+      </div>
+
+      <div class="mt-14 animate-float">
+        <div class="glass-card rounded-3xl p-6 max-w-xl mx-auto text-left shadow-2xl" style="box-shadow:0 24px 90px rgba(249,115,22,.14),0 0 0 1px rgba(249,115,22,.08);">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#f97316,#a855f7);">✦</span>
+            <div>
+              <p class="font-bold text-sm">ORBIT Risk Analysis</p>
+              <p class="text-xs text-slate-500">Context-aware draft • ready for review</p>
+            </div>
+            <span class="ml-auto text-xs text-slate-500">just now</span>
+          </div>
+
+          <div class="bg-slate-900/70 rounded-xl p-4 mb-4 border border-slate-700/60 text-sm text-slate-300 italic">
+            “This is unusable — refund now or I’m filing a dispute.”
+          </div>
+
+          <div class="mb-4">
+            <div class="flex justify-between text-xs mb-2">
+              <span class="text-slate-400 font-medium">Refund Risk Score</span>
+              <span class="font-bold risk-high">92 / 100 — HIGH</span>
+            </div>
+            <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div class="h-full rounded-full" style="width:92%;background:linear-gradient(90deg,#fb7185,#dc2626);"></div>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-500 mb-2 uppercase tracking-[.15em] font-semibold">AI Reply Draft</p>
+          <div class="bg-slate-900/45 rounded-xl p-4 border border-slate-700/50 text-sm text-slate-200 leading-relaxed">
+            I understand why this is frustrating. Please send your order ID and the exact issue you encountered.
+            I’ll review it personally and come back with a clear resolution.
+          </div>
+
+          <button id="widget-copy-btn" type="button" class="focus-ring mt-4 w-full py-3 rounded-xl text-sm font-bold btn-primary">
+            Copy Draft
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 pb-24 text-center">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-slate-300 mb-5">Product Demo</span>
+      <h2 class="text-3xl md:text-5xl font-black tracking-tight mb-4">See ORBIT in Action</h2>
+      <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-9">
+        Watch ORBIT detect risk signals and create a contextual reply inside a marketplace dashboard.
+      </p>
+      <div class="glass-card rounded-3xl p-3 md:p-4 shadow-2xl border border-slate-800">
+        <div class="relative w-full overflow-hidden rounded-2xl" style="padding-top:56.25%;">
+          <iframe class="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/lFRklsfD_yQ"
+                  title="ORBIT AI product demo"
+                  frameborder="0"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-16">
+      <p class="text-center text-xs text-slate-600 uppercase tracking-[.22em] font-semibold mb-7">Designed for customer conversations on supported product platforms</p>
+      <div class="flex flex-wrap justify-center items-center gap-10 text-slate-500 font-extrabold text-xl md:text-2xl">
+        <span>AppSumo</span>
+        <span>Gumroad</span>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-15">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">How It Works</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">
+          From Friction to a Clear Reply<br />
+          <span class="gradient-text">in Three Controlled Steps.</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 mt-14">
+        <article class="glass-card rounded-2xl p-8">
+          <p class="text-4xl font-black gradient-text mb-5">01</p>
+          <h3 class="text-xl font-bold mb-3">Scan the Page</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            ORBIT reads relevant comment content on supported pages while you browse. It does not monitor unrelated websites.
+          </p>
+        </article>
+        <article class="glass-card rounded-2xl p-8">
+          <p class="text-4xl font-black gradient-text mb-5">02</p>
+          <h3 class="text-xl font-bold mb-3">Assess Risk</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Sentiment, urgency and refund language are combined into a simple 0–100 risk score so critical messages surface first.
+          </p>
+        </article>
+        <article class="glass-card rounded-2xl p-8">
+          <p class="text-4xl font-black gradient-text mb-5">03</p>
+          <h3 class="text-xl font-bold mb-3">Review and Reply</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            ORBIT drafts a contextual answer. You remain in control: review, edit, then post the response yourself.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="features" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Product Features</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">
+          Built for Faster, More Consistent<br />
+          <span class="gradient-text">Customer Responses.</span>
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="font-bold text-lg mb-2">Real-Time Comment Scanning</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Analyze supported pages as you scroll without copying every message into another tool.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="font-bold text-lg mb-2">Gemini-Powered Reply Drafts</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Generate contextual drafts with friendly, professional or empathetic tones, then review before posting.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="font-bold text-lg mb-2">Privacy-First Architecture</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Local processing is used where possible. AI requests are encrypted, and ORBIT does not persist customer comments or generated replies.</p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <h3 class="font-bold text-lg mb-2">Inline Risk Prioritization</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Highlight messages that need attention before frustration turns into refund requests or disputes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-20">
+      <div class="glass-card rounded-3xl p-8 md:p-12 grid lg:grid-cols-[1.2fr_.8fr] gap-9 items-center">
+        <div>
+          <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">The Builder Behind ORBIT</p>
+          <h2 class="text-3xl md:text-4xl font-black tracking-tight mb-4">Built by Mourad Taberha</h2>
+          <p class="text-lg text-slate-300 font-semibold mb-4">SaaS Project Manager &amp; AI Automation Builder</p>
+          <p class="text-slate-400 leading-relaxed max-w-2xl">
+            ORBIT was designed as a practical product, not a prompt demo: a browser-based workflow that combines
+            customer context, risk analysis, AI generation, authentication, subscriptions and privacy controls.
+            The same product and systems approach is available for custom AI automation projects.
+          </p>
+        </div>
+        <div class="rounded-2xl p-6 bg-slate-900/55 border border-slate-800">
+          <p class="text-sm text-slate-500 uppercase tracking-[.16em] mb-4">Custom Systems</p>
+          <ul class="space-y-3 text-sm text-slate-300">
+            <li>✓ AI agents and workflow automation</li>
+            <li>✓ API, CRM, email and calendar integrations</li>
+            <li>✓ Multilingual Arabic, French and English flows</li>
+            <li>✓ Testing, documentation and team handover</li>
+          </ul>
+          <a href="/automation/" class="focus-ring mt-6 inline-flex items-center gap-2 font-bold text-orange-300 hover:text-orange-200 rounded">
+            View automation services and case studies <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-6 py-20">
+      <div class="text-center mb-12">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Selected Work</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">Products and Workflow Systems</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <article class="glass-card rounded-2xl p-7">
+          <p class="text-xs text-orange-300 font-bold uppercase tracking-[.16em] mb-3">Live Product</p>
+          <h3 class="text-xl font-bold mb-3">ORBIT AI</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Chrome extension for refund-risk detection, contextual customer analysis and human-reviewed AI reply generation.
+          </p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <p class="text-xs text-purple-300 font-bold uppercase tracking-[.16em] mb-3">Product in Development</p>
+          <h3 class="text-xl font-bold mb-3">MODIR</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Offline-first school management and intelligent scheduling platform with complex operational rules and desktop deployment.
+          </p>
+        </article>
+        <article class="glass-card rounded-2xl p-7">
+          <p class="text-xs text-cyan-300 font-bold uppercase tracking-[.16em] mb-3">Production Workflows</p>
+          <h3 class="text-xl font-bold mb-3">AI Video Systems</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Structured workflows for AI image and video generation, asset organization, prompt systems, editing and publishing.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing" class="max-w-6xl mx-auto px-6 py-24">
+      <div class="text-center mb-14">
+        <p class="text-sm font-semibold text-orange-400 uppercase tracking-[.2em] mb-3">Pricing</p>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight">Simple Product Plans</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <article class="glass-card rounded-2xl p-7 flex flex-col">
+          <div class="mb-5">
+            <h3 class="text-xl font-bold">Sandbox</h3>
+            <p class="text-sm text-slate-400 mt-1">Try the core workflow</p>
+          </div>
+          <p class="mb-5"><span class="text-4xl font-black">$0</span> <span class="text-slate-500">once</span></p>
+          <ul class="text-sm text-slate-300 space-y-3 mb-7 flex-1">
+            <li>✓ 10 trial AI replies</li>
+            <li>✓ Risk scoring</li>
+            <li>✓ No credit card required</li>
+          </ul>
+          <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+             target="_blank" rel="noopener noreferrer"
+             class="focus-ring w-full py-3 rounded-xl text-center font-bold btn-secondary">Install Free</a>
+        </article>
+
+        <article id="plan-monthly" class="glass-card rounded-2xl p-7 flex flex-col">
+          <div class="mb-5">
+            <h3 class="text-xl font-bold" data-plan-name>Pro Monthly</h3>
+            <p class="text-sm text-slate-400 mt-1">For consistent customer support</p>
+          </div>
+          <p class="mb-5"><span class="text-4xl font-black" data-plan-price>$12</span> <span class="text-slate-500" data-plan-period>/month</span></p>
+          <ul class="text-sm text-slate-300 space-y-3 mb-7 flex-1">
+            <li>✓ 200 replies per month</li>
+            <li>✓ Custom reply tone</li>
+            <li>✓ Priority support</li>
+          </ul>
+          <a href="#" data-plan-cta class="focus-ring w-full py-3 rounded-xl text-center font-bold btn-secondary">Sign in to Subscribe</a>
+        </article>
+
+        <article id="plan-annual" class="glass-card rounded-2xl p-7 flex flex-col relative" style="border-color:rgba(249,115,22,.5);">
+          <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500 to-purple-500">Best Value</span>
+          <div class="mb-5">
+            <h3 class="text-xl font-bold" data-plan-name>Pro Annual</h3>
+            <p class="text-sm text-slate-400 mt-1">Lower effective monthly cost</p>
+          </div>
+          <p class="mb-5"><span class="text-4xl font-black" data-plan-price>$99</span> <span class="text-slate-500" data-plan-period>/year</span></p>
+          <ul class="text-sm text-slate-300 space-y-3 mb-7 flex-1">
+            <li>✓ 200 replies per month</li>
+            <li>✓ Custom reply tone</li>
+            <li>✓ Priority support</li>
+          </ul>
+          <a href="#" data-plan-cta class="focus-ring w-full py-3 rounded-xl text-center font-bold btn-primary">Sign in to Subscribe</a>
+        </article>
+      </div>
+      <p class="text-center text-sm text-slate-500 mt-8">Switch or cancel plans according to the applicable billing terms.</p>
+    </section>
+
+    <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+      <div class="glass-card rounded-3xl p-10 md:p-16" style="box-shadow:0 0 90px rgba(249,115,22,.10);">
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-5">
+          Respond Faster Without<br /><span class="gradient-text">Losing the Human Judgment.</span>
+        </h2>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-9">
+          Built for SaaS founders and digital product teams that need faster, more consistent customer responses.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+             target="_blank" rel="noopener noreferrer"
+             class="focus-ring inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white font-bold btn-primary">
+            Install ORBIT Free
+          </a>
+          <a href="mailto:support@orbitai.space?subject=Custom%20AI%20Automation%20Project"
+             class="focus-ring inline-flex items-center justify-center px-8 py-4 rounded-2xl text-white font-bold btn-secondary">
+            Discuss a Custom System
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="relative z-10 border-t border-slate-800/90 px-6 py-10">
+    <div class="max-w-7xl mx-auto grid lg:grid-cols-[1fr_auto_1fr] gap-7 items-center">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 rounded-lg flex items-center justify-center text-xs" style="background:linear-gradient(135deg,#f97316,#a855f7);">✦</span>
+          <span class="font-bold">ORBIT</span>
+        </div>
+        <p class="text-xs text-slate-500">Built by Mourad Taberha — SaaS Project Manager &amp; AI Automation Builder.</p>
+        <p class="text-xs text-slate-600 mt-1">© 2026 ORBIT. All rights reserved.</p>
+      </div>
+
+      <a href="https://fazier.com/launches/orbitai.space" target="_blank" rel="noopener noreferrer" class="focus-ring rounded">
+        <img src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=featured&theme=light"
+             width="170" height="54" alt="Featured on Fazier" loading="lazy" />
       </a>
 
-      <p class="text-sm text-slate-500 flex items-center gap-1.5">
-        <span>🔒</span>
-        <span>100% Local Processing. Includes 10 Free AI Replies.</span>
-      </p>
+      <nav class="flex flex-wrap lg:justify-end items-center gap-x-6 gap-y-3 text-sm text-slate-400">
+        <a class="focus-ring rounded hover:text-white" href="/automation/">Automation</a>
+        <a class="focus-ring rounded hover:text-white" href="privacy.html">Privacy</a>
+        <a class="focus-ring rounded hover:text-white" href="terms.html">Terms</a>
+        <a class="focus-ring rounded hover:text-white" href="mailto:support@orbitai.space">Contact</a>
+        <a class="focus-ring rounded hover:text-white"
+           href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
+           target="_blank" rel="noopener noreferrer">Install</a>
+      </nav>
     </div>
-
-    <div class="mt-20 animate-float">
-      <div class="glass-card rounded-2xl p-6 max-w-md mx-auto text-left shadow-2xl"
-           style="box-shadow: 0 20px 80px rgba(249,115,22,0.15), 0 0 0 1px rgba(249,115,22,0.1);">
-        <div class="flex items-center gap-3 mb-5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-               style="background: linear-gradient(135deg, #f97316, #a855f7);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="text-white">
-              <circle cx="12" cy="12" r="3" fill="currentColor"/>
-              <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
-                    stroke="currentColor" stroke-width="1.5" fill="none"/>
-            </svg>
-          </div>
-          <span class="font-semibold text-sm">ORBIT — Risk Analysis</span>
-          <span class="ml-auto text-xs text-slate-500">just now</span>
-        </div>
-
-        <div class="bg-slate-800/60 rounded-xl p-4 mb-4 border border-slate-700/50 text-sm text-slate-300 italic">
-          "This is unusable — refund NOW or I'm filing a dispute with PayPal."
-        </div>
-
-        <div class="mb-4">
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-slate-400 font-medium">Refund Risk Score</span>
-            <span class="font-bold risk-high">92 / 100 — HIGH</span>
-          </div>
-          <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-            <div class="h-full rounded-full" style="width: 92%; background: linear-gradient(90deg, #f87171, #dc2626);"></div>
-          </div>
-        </div>
-
-        <div class="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wider">AI Reply Draft</div>
-        <div class="bg-slate-800/40 rounded-xl p-4 border border-slate-700/40 text-sm text-slate-200 leading-relaxed">
-          Hey! Just saw your message — completely understand the frustration.
-          Let me get this sorted for you personally. DM me your order ID and I'll
-          handle it within the hour. 💪
-        </div>
-
-        <button id="widget-copy-btn"
-                class="mt-4 w-full py-2.5 rounded-xl text-sm font-semibold text-white btn-primary">
-          ✦ Copy & Reply
-        </button>
-      </div>
-    </div>
-  </section>
-<!-- ───────────────── DEMO VIDEO ───────────────── -->
-<section class="relative z-10 max-w-5xl mx-auto px-6 pb-24 text-center">
-  <div class="mb-8">
-    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-sm font-medium text-slate-300 mb-5">
-      🎥 Product Demo
-    </span>
-    <h2 class="text-3xl md:text-5xl font-black tracking-tight mb-4">
-      See ORBIT in Action
-    </h2>
-    <p class="text-lg text-slate-400 max-w-2xl mx-auto">
-      Watch how ORBIT detects customer risk signals and helps you generate contextual AI replies inside marketplace dashboards.
-    </p>
-  </div>
-
-  <div class="glass-card rounded-3xl p-3 md:p-4 shadow-2xl border border-slate-800">
-    <div class="relative w-full overflow-hidden rounded-2xl" style="padding-top: 56.25%;">
-      <iframe
-        class="absolute inset-0 w-full h-full"
-        src="https://www.youtube.com/embed/lFRklsfD_yQ"
-        title="ORBIT AI Demo"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </div>
-</section>
-  <!-- ───────────────── LOGOS / SOCIAL PROOF ───────────────── -->
-  <section class="relative z-10 pb-20 px-6">
-    <p class="text-center text-xs text-slate-600 uppercase tracking-widest font-medium mb-8">Works on your favourite platforms</p>
-    <div class="flex flex-wrap justify-center items-center gap-10 opacity-40 grayscale">
-      <svg height="28" viewBox="0 0 150 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">AppSumo</text>
-      </svg>
-
-      <svg height="28" viewBox="0 0 130 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">Gumroad</text>
-      </svg>
-
-      <svg height="28" viewBox="0 0 180 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <text y="24" font-size="26" font-weight="700" fill="white" font-family="Inter,sans-serif">Product Hunt</text>
-      </svg>
-    </div>
-  </section>
-
-  <!-- ───────────────── HOW IT WORKS ───────────────── -->
-  <section id="how-it-works" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">How It Works</p>
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
-        From Comment to Reply<br/>
-        <span class="gradient-text">in 3 Seconds Flat.</span>
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-3 gap-6">
-
-      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-orange-500/30 transition-all duration-300 cursor-default group">
-        <div class="flex items-center gap-3">
-          <span class="text-4xl font-black step-badge">01</span>
-        </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-orange-400">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
-                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-2">Auto-Scan</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">
-            Sits quietly in your browser and automatically scans comment sections on platforms like AppSumo and Gumroad as you browse.
-          </p>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-purple-500/30 transition-all duration-300 cursor-default group"
-           style="border-color: rgba(168,85,247,0.15);">
-        <div class="flex items-center gap-3">
-          <span class="text-4xl font-black step-badge">02</span>
-        </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.2);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-purple-400">
-            <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"
-                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-2">Risk Detection</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">
-            Analyzes sentiment and tone, then assigns a <strong class="text-white">Refund Risk Score</strong> from 0–100 so you know exactly which comments need urgent attention.
-          </p>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-8 flex flex-col gap-5 hover:border-orange-500/30 transition-all duration-300 cursor-default group">
-        <div class="flex items-center gap-3">
-          <span class="text-4xl font-black step-badge">03</span>
-        </div>
-        <div class="w-12 h-12 rounded-xl flex items-center justify-center"
-             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.2);">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="text-orange-400">
-            <path d="M12 20h9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
-                  stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold mb-2">1-Click Reply</h3>
-          <p class="text-slate-400 text-sm leading-relaxed">
-            Generates a personalized, founder-level response — empathetic, decisive, and human. Click to insert directly into the comment box.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ───────────────── FEATURES ───────────────── -->
-  <section id="features" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">Features</p>
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
-        Built for Founders Who<br/>
-        <span class="gradient-text">Can't Afford Churn.</span>
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6">
-
-      <div class="glass-card rounded-2xl p-7 flex gap-5">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-orange-400">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.8"/>
-            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="font-bold text-base mb-1.5">Real-Time Comment Scanning</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Automatically monitors live pages as you scroll — no manual refresh needed.</p>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-7 flex gap-5">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-purple-400">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="font-bold text-base mb-1.5">Gemini AI Replies</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Powered by Google Gemini, replies sound human, not chatbot. Customisable tone: friendly, professional, or empathetic.</p>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-7 flex gap-5">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-             style="background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-orange-400">
-            <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
-            <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="font-bold text-base mb-1.5">Privacy First</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">All analysis runs locally or via direct secure API calls. Your customer data never touches our servers.</p>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-7 flex gap-5">
-        <div class="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-             style="background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.25);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="text-purple-400">
-            <path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <div>
-          <h3 class="font-bold text-base mb-1.5">Inline Risk Protection</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">ORBIT highlights risky comments directly inside supported pages and helps you respond before frustration turns into refunds.</p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ───────────────── PRICING ───────────────── -->
-  <section id="pricing" class="relative z-10 max-w-6xl mx-auto px-6 py-24">
-    <div class="text-center mb-16">
-      <p class="text-sm font-semibold text-orange-400 uppercase tracking-widest mb-3">Pricing</p>
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight">
-        Simple, Transparent<br/>
-        <span class="gradient-text">Pricing.</span>
-      </h2>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col">
-        <div class="mb-4">
-          <h3 class="text-lg font-bold text-white">Sandbox</h3>
-          <p class="text-sm text-slate-400 mt-1">Try before you buy</p>
-        </div>
-        <div class="mb-4">
-          <span class="text-3xl font-black text-white">$0</span>
-          <span class="text-sm text-slate-500"> once</span>
-        </div>
-        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>10 trial AI replies</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Test the magic</span>
-          </li>
-        </ul>
-        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
-          Get Started
-        </a>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col" id="plan-monthly">
-        <div class="mb-4">
-          <h3 class="text-lg font-bold text-white" data-plan-name>Pro Monthly</h3>
-          <p class="text-sm text-slate-400 mt-1">For consistent creators</p>
-        </div>
-        <div class="mb-4">
-          <span class="text-3xl font-black text-white" data-plan-price>$12</span>
-          <span class="text-sm text-slate-500" data-plan-period>/month</span>
-        </div>
-        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>200 replies/month</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Custom tone</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Priority support</span>
-          </li>
-        </ul>
-        <a href="#"
-           data-plan-cta
-           class="w-full py-3 rounded-xl text-sm font-semibold text-white border border-slate-600 hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 text-center">
-          Sign in to Subscribe
-        </a>
-      </div>
-
-      <div class="glass-card rounded-2xl p-6 flex flex-col relative" id="plan-annual" style="border-color: rgba(249,115,22,0.5);">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500 to-purple-500 text-white">
-          Best Value
-        </div>
-        <div class="mb-4">
-          <h3 class="text-lg font-bold text-white" data-plan-name>Pro Annual</h3>
-          <p class="text-sm text-slate-400 mt-1">Save 31% vs monthly</p>
-        </div>
-        <div class="mb-4">
-          <span class="text-3xl font-black text-white" data-plan-price>$99</span>
-          <span class="text-sm text-slate-500" data-plan-period>/year</span>
-        </div>
-        <ul class="text-sm text-slate-300 space-y-2 mb-6 flex-1">
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>200 replies/month</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Custom tone</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <svg class="w-5 h-5 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-            <span>Priority support</span>
-          </li>
-        </ul>
-        <a href="#"
-           data-plan-cta
-           class="w-full py-3 rounded-xl text-sm font-bold text-white btn-primary text-center">
-          Sign in to Subscribe
-        </a>
-      </div>
-
-    </div>
-
-    <p class="text-center text-sm text-slate-500 mt-8">No hidden fees. Switch or cancel plans anytime.</p>
-  </section>
+  </footer>
 
   <script>
     (function () {
+      var copyButton = document.getElementById('widget-copy-btn');
+      if (copyButton) {
+        copyButton.addEventListener('click', function () {
+          var button = this;
+          button.textContent = 'Copied — review before posting';
+          button.style.opacity = '.82';
+          setTimeout(function () {
+            button.textContent = 'Copy Draft';
+            button.style.opacity = '1';
+          }, 1800);
+        });
+      }
+
       var PLANS_URL = 'https://orbit-billing-worker.mourad-taberha.workers.dev/plans';
       var CHECKOUT_URL = 'https://orbit-billing-worker.mourad-taberha.workers.dev/checkout';
-
       var ORBIT_FIREBASE_CONFIG = {
         apiKey: 'AIzaSyCehLdSzNwsdeIPNIJNci7Ei7clHhSwVAI',
         authDomain: 'orbit-ai-b4f6e.firebaseapp.com',
@@ -590,37 +507,30 @@
         if (document.getElementById('orbit-auth-modal')) return;
         var modal = document.createElement('div');
         modal.id = 'orbit-auth-modal';
-        modal.style.cssText = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:9999;padding:18px;';
+        modal.style.cssText = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);z-index:9999;padding:18px;';
         modal.innerHTML =
-          '<div style="width:100%;max-width:420px;border-radius:18px;border:1px solid rgba(255,255,255,0.12);background:rgba(9,12,28,0.96);backdrop-filter: blur(10px);padding:18px;">' +
+          '<div style="width:100%;max-width:420px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(9,12,28,.98);padding:20px;box-shadow:0 30px 100px rgba(0,0,0,.45);">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;">' +
-          '<div style="font-weight:900;color:#fff;letter-spacing:-0.2px;">Sign in to subscribe</div>' +
-          '<button id="orbit-auth-close" style="background:transparent;border:0;color:#9ca3af;font-size:18px;cursor:pointer;">×</button>' +
+          '<div style="font-weight:900;color:#fff;">Sign in to subscribe</div>' +
+          '<button id="orbit-auth-close" aria-label="Close" style="background:transparent;border:0;color:#9ca3af;font-size:22px;cursor:pointer;">×</button>' +
           '</div>' +
-          '<div style="color:#9ca3af;font-size:12px;line-height:1.45;margin-bottom:12px;">We use your ORBIT account to link your subscription to your Firestore user.</div>' +
+          '<div style="color:#9ca3af;font-size:12px;line-height:1.5;margin-bottom:14px;">Your ORBIT account links the subscription to your user profile.</div>' +
           '<div style="display:flex;flex-direction:column;gap:10px;">' +
-          '<input id="orbit-auth-email" type="email" placeholder="Email" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;outline:none;" />' +
-          '<input id="orbit-auth-pass" type="password" placeholder="Password" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;outline:none;" />' +
-          '<button id="orbit-auth-signin" style="width:100%;padding:12px 12px;border-radius:12px;border:1px solid rgba(249,115,22,0.35);background:linear-gradient(135deg,#f97316,#a855f7);color:#fff;font-weight:800;cursor:pointer;">Sign in</button>' +
+          '<input id="orbit-auth-email" type="email" autocomplete="email" placeholder="Email" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.28);color:#fff;outline:none;" />' +
+          '<input id="orbit-auth-pass" type="password" autocomplete="current-password" placeholder="Password" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.28);color:#fff;outline:none;" />' +
+          '<button id="orbit-auth-signin" style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(249,115,22,.35);background:linear-gradient(135deg,#f97316,#a855f7);color:#fff;font-weight:800;cursor:pointer;">Sign in</button>' +
           '<div id="orbit-auth-status" style="display:none;font-size:12px;text-align:center;color:#9ca3af;"></div>' +
-          '</div>' +
-          '</div>';
+          '</div></div>';
         document.body.appendChild(modal);
-
-        modal.addEventListener('click', function (e) {
-          if (e.target === modal) hideModal();
-        });
-        document.getElementById('orbit-auth-close')?.addEventListener('click', hideModal);
+        modal.addEventListener('click', function (event) { if (event.target === modal) hideModal(); });
+        document.getElementById('orbit-auth-close').addEventListener('click', hideModal);
       }
 
       function showModal(message) {
         ensureModal();
         var modal = document.getElementById('orbit-auth-modal');
-        var st = document.getElementById('orbit-auth-status');
-        if (st && message) {
-          st.style.display = 'block';
-          st.textContent = message;
-        }
+        var status = document.getElementById('orbit-auth-status');
+        if (status && message) { status.style.display = 'block'; status.textContent = message; }
         if (modal) modal.style.display = 'flex';
       }
 
@@ -632,205 +542,109 @@
       async function loadFirebase() {
         if (window.__orbitFirebaseLoaded) return window.__orbitFirebaseLoaded;
         window.__orbitFirebaseLoaded = (async function () {
-          const appMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js');
-          const authMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
-          const app = appMod.initializeApp(ORBIT_FIREBASE_CONFIG);
-          const auth = authMod.getAuth(app);
-          return { auth, authMod };
+          var appMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js');
+          var authMod = await import('https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js');
+          var app = appMod.initializeApp(ORBIT_FIREBASE_CONFIG);
+          var auth = authMod.getAuth(app);
+          return { auth: auth, authMod: authMod };
         })();
         return window.__orbitFirebaseLoaded;
       }
 
       async function requireAuth() {
-        const fb = await loadFirebase();
-        if (fb.auth.currentUser) return fb.auth.currentUser;
+        var firebase = await loadFirebase();
+        if (firebase.auth.currentUser) return firebase.auth.currentUser;
         showModal('Please sign in to continue.');
-        return new Promise((resolve, reject) => {
-          const btn = document.getElementById('orbit-auth-signin');
-          const emailEl = document.getElementById('orbit-auth-email');
-          const passEl = document.getElementById('orbit-auth-pass');
-          const st = document.getElementById('orbit-auth-status');
-          if (!btn || !emailEl || !passEl) return reject(new Error('AUTH_UI_MISSING'));
-          btn.onclick = async (e) => {
-            e.preventDefault();
-            const email = String(emailEl.value || '').trim();
-            const pass = String(passEl.value || '').trim();
-            if (!email || !pass) {
-              if (st) { st.style.display = 'block'; st.textContent = 'Enter email and password.'; }
+        return new Promise(function (resolve, reject) {
+          var button = document.getElementById('orbit-auth-signin');
+          var emailElement = document.getElementById('orbit-auth-email');
+          var passwordElement = document.getElementById('orbit-auth-pass');
+          var status = document.getElementById('orbit-auth-status');
+          if (!button || !emailElement || !passwordElement) {
+            reject(new Error('AUTH_UI_MISSING'));
+            return;
+          }
+          button.onclick = async function (event) {
+            event.preventDefault();
+            var email = String(emailElement.value || '').trim();
+            var password = String(passwordElement.value || '').trim();
+            if (!email || !password) {
+              status.style.display = 'block';
+              status.textContent = 'Enter your email and password.';
               return;
             }
             try {
-              if (st) { st.style.display = 'block'; st.textContent = 'Signing in...'; }
-              await fb.authMod.signInWithEmailAndPassword(fb.auth, email, pass);
+              status.style.display = 'block';
+              status.textContent = 'Signing in…';
+              await firebase.authMod.signInWithEmailAndPassword(firebase.auth, email, password);
               hideModal();
-              resolve(fb.auth.currentUser);
-            } catch (err) {
-              if (st) { st.style.display = 'block'; st.textContent = 'Sign-in failed. Please try again.'; }
+              resolve(firebase.auth.currentUser);
+            } catch (error) {
+              status.style.display = 'block';
+              status.textContent = 'Sign-in failed. Check your details and try again.';
             }
           };
         });
       }
 
       async function startWebsiteCheckout(planId) {
-        const user = await requireAuth();
-        if (!user) return;
-        const idToken = await user.getIdToken();
-        const resp = await fetch(CHECKOUT_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + idToken
-          },
-          body: JSON.stringify({ planId: planId, source: 'website' })
-        });
-        if (!resp.ok) {
-          alert('Could not start checkout. Please try again.');
-          return;
-        }
-        const data = await resp.json().catch(() => ({}));
-        if (data?.checkoutUrl) {
+        try {
+          var user = await requireAuth();
+          if (!user) return;
+          var idToken = await user.getIdToken();
+          var response = await fetch(CHECKOUT_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + idToken
+            },
+            body: JSON.stringify({ planId: planId, source: 'website' })
+          });
+          if (!response.ok) throw new Error('CHECKOUT_FAILED');
+          var data = await response.json();
+          if (!data || !data.checkoutUrl) throw new Error('CHECKOUT_URL_MISSING');
           window.open(data.checkoutUrl, '_blank', 'noopener');
-          return;
+        } catch (error) {
+          alert('Could not start checkout. Please try again.');
         }
-        alert('Could not start checkout. Please try again.');
       }
 
-      function applyPlan(el, plan) {
-        if (!el || !plan) return;
-        var nameEl = el.querySelector('[data-plan-name]');
-        var priceEl = el.querySelector('[data-plan-price]');
-        var periodEl = el.querySelector('[data-plan-period]');
-        if (nameEl) nameEl.textContent = plan.name || nameEl.textContent;
-        if (priceEl) {
-          // Keep existing typography, swap the label only.
-          var m = String(plan.priceLabel || '').match(/^\$(\d+)(?:\/(month|year))?$/);
-          priceEl.textContent = m ? ('$' + m[1]) : (plan.priceLabel || priceEl.textContent);
+      function applyPlan(element, plan) {
+        if (!element || !plan) return;
+        var nameElement = element.querySelector('[data-plan-name]');
+        var priceElement = element.querySelector('[data-plan-price]');
+        var periodElement = element.querySelector('[data-plan-period]');
+        if (nameElement && plan.name) nameElement.textContent = plan.name;
+        if (priceElement && plan.priceLabel) {
+          var match = String(plan.priceLabel).match(/^\$(\d+)(?:\/(month|year))?$/);
+          priceElement.textContent = match ? ('$' + match[1]) : plan.priceLabel;
         }
-        if (periodEl) {
-          periodEl.textContent = plan.billingPeriod === 'monthly' ? '/month' : '/year';
-        }
-
-        el.querySelectorAll('[data-plan-cta]').forEach(function (cta) {
+        if (periodElement) periodElement.textContent = plan.billingPeriod === 'monthly' ? '/month' : '/year';
+        element.querySelectorAll('[data-plan-cta]').forEach(function (cta) {
           cta.textContent = 'Choose Plan';
-          cta.addEventListener('click', function (e) {
-            e.preventDefault();
+          cta.addEventListener('click', function (event) {
+            event.preventDefault();
             startWebsiteCheckout(plan.id);
           });
         });
       }
 
       fetch(PLANS_URL)
-        .then(function (r) { return r.json(); })
+        .then(function (response) { return response.json(); })
         .then(function (data) {
           var plans = Array.isArray(data && data.plans) ? data.plans : [];
-          var monthly = plans.find(function (p) { return p && p.id === 'monthly'; });
-          var annual = plans.find(function (p) { return p && p.id === 'annual'; });
-          applyPlan(document.getElementById('plan-monthly'), monthly);
-          applyPlan(document.getElementById('plan-annual'), annual);
+          applyPlan(document.getElementById('plan-monthly'), plans.find(function (plan) { return plan && plan.id === 'monthly'; }));
+          applyPlan(document.getElementById('plan-annual'), plans.find(function (plan) { return plan && plan.id === 'annual'; }));
         })
         .catch(function () {
-          // If plans fail to load, keep the static copy as-is.
+          document.querySelectorAll('[data-plan-cta]').forEach(function (cta) {
+            cta.addEventListener('click', function (event) {
+              event.preventDefault();
+              alert('Live plan data is temporarily unavailable. Please contact support@orbitai.space.');
+            });
+          });
         });
     })();
-  </script>
-
-  <!-- ───────────────── FINAL CTA ───────────────── -->
-  <section class="relative z-10 max-w-4xl mx-auto px-6 py-24 text-center">
-    <div class="glass-card rounded-3xl p-12 md:p-16"
-         style="box-shadow: 0 0 100px rgba(249,115,22,0.1), 0 0 0 1px rgba(249,115,22,0.08);">
-      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
-           style="background: linear-gradient(135deg, #f97316, #a855f7);">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" class="text-white">
-          <circle cx="12" cy="12" r="3" fill="currentColor"/>
-          <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z"
-                stroke="currentColor" stroke-width="1.5" fill="none"/>
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"
-                stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.6"/>
-        </svg>
-      </div>
-
-      <h2 class="text-4xl md:text-5xl font-black tracking-tight mb-5">
-        Your Next Refund Request<br/>
-        <span class="shimmer-text">Could Be Prevented.</span>
-      </h2>
-
-      <p class="text-slate-400 text-lg mb-10 max-w-xl mx-auto">
-        Join hundreds of SaaS founders and digital creators protecting their revenue, one reply at a time.
-      </p>
-
-      <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-         id="bottom-cta-btn"
-         target="_blank"
-         rel="noopener noreferrer"
-         class="inline-flex items-center gap-3 px-9 py-4 rounded-2xl text-white font-bold text-lg btn-primary">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-        </svg>
-        Install ORBIT (Free Trial)
-      </a>
-
-      <p class="text-sm text-slate-600 mt-4">Includes 10 Free AI Replies • No credit card required</p>
-    </div>
-  </section>
-
-  <!-- ───────────────── FOOTER ───────────────── -->
-  <footer class="relative z-10 border-t border-slate-800 px-6 py-10">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg flex items-center justify-center"
-             style="background: linear-gradient(135deg, #f97316, #a855f7);">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" class="text-white">
-            <circle cx="12" cy="12" r="3" fill="currentColor"/>
-            <path d="M12 5C8.13 5 5 8.13 5 12s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-          </svg>
-        </div>
-        <span class="font-bold text-sm">ORBIT</span>
-        <span class="text-slate-600 text-xs ml-2">© 2025 All rights reserved.</span>
-      </div>
-      <div class="flex items-center justify-center md:justify-start">
-  <a href="https://fazier.com/launches/orbitai.space" target="_blank" rel="noopener noreferrer">
-    <img
-      src="https://fazier.com/api/v1//public/badges/launch_badges.svg?badge_type=featured&theme=light"
-      width="180"
-      alt="Featured on Fazier"
-      loading="lazy"
-    />
-  </a>
-</div>
-
-      <nav class="flex items-center gap-8 text-sm text-slate-400">
-        <a href="privacy.html"
-           id="footer-privacy-link"
-           class="hover:text-white transition-colors duration-200">
-          Privacy Policy
-        </a>
-<a href="terms.html" class="hover:text-white transition-colors duration-200">Terms</a>
-     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=support@orbitai.space" target="_blank" rel="noopener noreferrer" id="footer-contact-link">
-  Contact
-</a>
-
-        <a href="https://chromewebstore.google.com/detail/orbit-ai-command-center-f/dhcgiacmdmmcbhgecbdihhkakcpafagn"
-           id="footer-install-link"
-           target="_blank"
-           rel="noopener noreferrer"
-           class="hover:text-white transition-colors duration-200">
-          Install Extension
-        </a>
-      </nav>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('widget-copy-btn').addEventListener('click', function () {
-      const btn = this;
-      btn.textContent = '✓ Copied to clipboard!';
-      btn.style.opacity = '0.8';
-
-      setTimeout(() => {
-        btn.textContent = '✦ Copy & Reply';
-        btn.style.opacity = '1';
-      }, 1800);
-    });
   </script>
 </body>
 </html>
